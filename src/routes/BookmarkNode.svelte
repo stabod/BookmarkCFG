@@ -1,6 +1,7 @@
 <script>
     import BookmarkNode from "./BookmarkNode.svelte";
-    let { node, selected, onSelect, lineage = [] } = $props();
+    import { selection } from './selectedBookmark.svelte.js';
+    let { node, lineage = [] } = $props();
 </script>
 
 {#snippet recursive(parent)}
@@ -9,8 +10,6 @@
             <li class="node-item">
                 <BookmarkNode
                     node={child}
-                    {selected}
-                    {onSelect}
                     lineage={[...lineage, parent]}
                 />
             </li>
@@ -19,11 +18,11 @@
 {/snippet}
 
 <div>
-    <label class={node.root ? "topitem-text" : "folder-text"}>
+    <label class={node.root ? "topitem-text hide-radio" : "folder-text hide-radio"}>
         <input
             type="radio"
-            checked={selected === node}
-            onchange={() => onSelect(node, lineage)}
+            checked={selection.bookmark === node}
+            onchange={() => selection.selectNew(node, lineage)}
         />
         {node.title}
     </label>
@@ -61,6 +60,14 @@
         font-size: large;
         text-align: center;
         border: solid;
+    }
+    input[type="radio"]{
+        visibility: hidden;
+        height: 0;
+        width: 0;
+    } 
+    input[type="radio"]:checked{
+        background-color: #58ba83;
     }
     .placeholder {
         font-size: large;

@@ -1,13 +1,13 @@
 <script>
-    let { selected = $bindable(null), lineage = $bindable([]), actions} = $props();
+    import { selection } from './selectedBookmark.svelte.js'
 
     function prettyLineage() {
         let string = ""
-        for (let ansestor of lineage) {
+        for (let ansestor of selection.lineage) {
             string += ansestor.title
             string += ' > '
         }
-        string += selected.title
+        string += selection.bookmark.title
         return string
     }
 
@@ -22,21 +22,21 @@
     <label>
         Title
         <br>
-        <input type="text" bind:value={selected.title}/>
+        <input type="text" bind:value={selection.bookmark.title}/>
     </label>
     <br>
     <label>
         Date Added
         <br>
-        <input type="number" bind:value={selected.dateAdded}/>
-        Which is {parseTimestamp(selected.dateAdded)}
+        <input type="number" bind:value={selection.bookmark.dateAdded}/>
+        Which is {parseTimestamp(selection.bookmark.dateAdded)}
     </label>
     <br>
     <label>
         Date Modified
         <br>
-        <input type="number" bind:value={selected.lastModified}/>
-        Which is {parseTimestamp(selected.lastModified)}
+        <input type="number" bind:value={selection.bookmark.lastModified}/>
+        Which is {parseTimestamp(selection.bookmark.lastModified)}
     </label>
     <br>
 {/snippet}
@@ -45,34 +45,34 @@
     <label>
         URI
         <br>
-        <input type="text" bind:value={selected.uri}/>
+        <input type="text" bind:value={selection.bookmark.uri}/>
     </label>
     <br>
     <label>
         Icon URI
         <br>
-        <input type="text" bind:value={selected.iconUri}/>
+        <input type="text" bind:value={selection.bookmark.iconUri}/>
         <br>
-        <img src={selected.iconUri} alt='' style='width: 32px; height: 32px'/>
+        <img src={selection.bookmark.iconUri} alt='' style='width: 32px; height: 32px'/>
     </label>
     <br>
 {/snippet}
 
 {#snippet modifyButtons()}
-    <button onclick={actions.moveUp}>Move Up</button> 
-    <button onclick={actions.moveDown}>Move Down</button>
+    <button onclick={() => selection.moveUp()}>Move Up</button> 
+    <button onclick={() => selection.moveDown()}>Move Down</button>
 {/snippet}
 
 <div>
-    {#if selected == null}
-        <span>Nothing is selected</span>
-    {:else if selected.root}
+    {#if selection.bookmark == null}
+        <span>Nothing is selection.bookmark</span>
+    {:else if selection.bookmark.root}
         <span>Cannot edit root nodes</span>
     {:else}
         <span>{prettyLineage()}</span>
         <br>
         {@render commonFields()}
-        {#if selected.typeCode == 1}
+        {#if selection.bookmark.typeCode == 1}
             {@render bookmarkSpecific()}
         {/if}
         {@render modifyButtons()}

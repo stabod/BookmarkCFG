@@ -1,18 +1,11 @@
 <script>
-  import BookmarkNode from './BookmarkNode.svelte'
-  import Editor from './Editor.svelte'
+  import BookmarkNode from './BookmarkNode.svelte';
+  import Editor from './Editor.svelte';
+  import { selection } from './selectedBookmark.svelte.js'
 
   let bookmarkData = $state(null);
   let errorMsg = $state("");
 
-  let selectedNode = $state(null);
-  let selectedLineage = $state([]);
-
-  function handleSelect(node, lineage) {
-    selectedNode = node;
-    selectedLineage = lineage;
-  }
-  
   function handleFileUpload(event) {
     const file = event.target.files[0];
     if (!file) return;
@@ -26,7 +19,7 @@
         errorMsg = "Invalid JSON file.";
         bookmarkData = null;
       }
-      selectedNode.clear();
+      selection.clear();
     };
     reader.readAsText(file);
   }
@@ -46,36 +39,6 @@
   function unloadJSON() {
     bookmarkData = null;
     editingData = null;
-  }
-
-  function swapNodes(array, nodeA, nodeB) {
-    array[nodeB.index] = nodeA;
-    array[nodeA.index] = nodeB;
-    nodeA.index -= 1;
-    nodeB.index += 1;
-  }
-
-  function moveUpSelected() {
-    if (selectedNode == null || selectedLineage == null) return;
-    if (selectedNode.index == 0) return;
-    const parent = selectedLineage.at(selectedLineage.length - 1);
-    const siblings = parent.children;
-    let previous = siblings.at(selectedNode.index - 1);
-    swapNodes(siblings, selectedNode, previous);
-  }
-
-  function moveDownSelected() {
-    if (selectedNode == null || selectedLineage == null) return;
-    const parent = selectedLineage.at(selectedLineage.length - 1);
-    const siblings = parent.children;
-    if (selectedNode.index == siblings.length - 1) return;
-    let next = siblings.at(selectedNode.index + 1);
-    swapNodes(siblings, next, selectedNode);
-  }
-
-  const moveActions = {
-    moveUp: moveUpSelected,
-    moveDown: moveDownSelected
   }
 
 </script>
@@ -104,14 +67,14 @@
       <div class="pane tree-pane">
         {#if bookmarkData.children}
           {#each bookmarkData.children as child}
-            <BookmarkNode node={child} selected={selectedNode} onSelect={handleSelect} />
+            <BookmarkNode node={child} />
           {/each}
         {:else}
           <p>No compatible bookmark entries discovered.</p>
         {/if}
       </div>
       <div class="editor-card">
-          <Editor bind:selected={selectedNode} bind:lineage={selectedLineage} actions={moveActions}/>
+          <Editor/>
       </div>
     </div>
   {/if}
@@ -120,39 +83,51 @@
 <style>
   :global(body) {
     font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-    background-color: #121212;
+    background-color: #303030;
     color: #e0e0e0;
     margin: 0;
     padding: 24px;
   }
-  .container { margin: 0 auto; }
-  .toolbar { display: flex; gap: 16px; margin-bottom: 24px; }
-  
+
+  .container { 
+    margin: 0 auto; 
+  }
+
+  .toolbar { 
+    display: flex; 
+    gap: 16px; 
+    margin-bottom: 24px; 
+  }
+
   .file-upload {
-    background: #ff3e00;
+    background: #175200;
     padding: 10px 18px;
     border-radius: 6px;
     cursor: pointer;
     font-weight: 600;
   }
-  .file-upload input { display: none; }
+
+  .file-upload input { 
+    display: none; 
+  }
+
   .export-btn {
-    background: #00b4d8;
+    background: #007443;
     border: none;
     padding: 10px 18px;
     border-radius: 6px;
     font-weight: 600;
     cursor: pointer;
-    color: #050505;
   }
- 
+
   .workspace {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 24px;
-    height: calc(100vh - 180px);
+    height: 80vh;
     min-height: 500px;
   }
+  
   .pane {
     background: #1e1e1e;
     border: 1px solid #333;
