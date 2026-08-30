@@ -22,23 +22,19 @@
     <label>
         <span class="label-text">Title</span>
         <br>
-        <input type="text" bind:value={selection.bookmark.title}/>
+        <input type="text" bind:value={selection.bookmark.text}/>
     </label>
     <br>
     <label>
         <span class="label-text">Date Added</span>
         <br>
-        <input type="number" bind:value={selection.bookmark.dateAdded}/>
-        <br>
-        <span>Which is {parseTimestamp(selection.bookmark.dateAdded)}</span>
+        <input type="number" bind:value={selection.bookmark.attributes.add_date}/>
     </label>
     <br>
     <label>
         <span class="label-text">Date Modified</span>
         <br>
-        <input type="number" bind:value={selection.bookmark.lastModified}/>
-        <br>
-        <span>Which is {parseTimestamp(selection.bookmark.lastModified)}</span>
+        <input type="number" bind:value={selection.bookmark.attributes.last_modified}/>
     </label>
     <br>
 {/snippet}
@@ -69,8 +65,6 @@
 <div>
     {#if selection.bookmark == null}
         <span>Nothing is selected</span>
-    {:else if selection.bookmark.root}
-        <span>Cannot edit root nodes</span>
     {:else}
         <br>
         <div class="fields">

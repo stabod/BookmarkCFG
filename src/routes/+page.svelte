@@ -32,6 +32,7 @@
           const parsedData = parser.parseFromString(e.target.result, "text/html")
           const obj = elementToObj(parsedData.body);
           console.log(obj.children)
+          bookmarkData = obj.children
       } catch (err) {
         errorMsg = "Failed to read HTML.";
       }
@@ -85,6 +86,7 @@
   function unloadBookmarkData() {
     bookmarkData = null;
     editingData = null;
+    selection.selectNew(null, null);
   }
 
 </script>
@@ -114,19 +116,21 @@
   {#if bookmarkData}
     <div class="workspace">
       <div class="pane">
-        {#if bookmarkData.children}
-          {#each bookmarkData.children as child}
+        {#each bookmarkData as child}
             <BookmarkNode node={child} />
-          {/each}
-        {:else}
-          <p>No compatible bookmark entries discovered.</p>
-        {/if}
+        {/each}
       </div>
       <div class="pane">
           <Editor/>
       </div>
     </div>
   {/if}
+
+  <div>
+    <h2>Instructions</h2>
+    <p>When a file is uploaded, two panes will appear. The left pane shows a tree view of the uploaded bookmarks. 
+       Clicking on any bookmark or folder selects it. The right pane shows fields and buttons that can be used to edit the selected bookmark.</p>
+  </div>
 </main>
 
 <style>
@@ -183,9 +187,13 @@
     border: 4px solid #333;
     border-radius: 8px;
     padding: 20px;
-    overflow-y: auto;
+    overflow-y: scroll;
     height: 80vh;
     width: 50%;
+  }
+
+  .pane-title {
+    border-bottom: solid;
   }
 
   @media (max-width: 768px) {

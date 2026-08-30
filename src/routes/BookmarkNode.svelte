@@ -3,20 +3,8 @@
     import { selection } from './selectedBookmark.svelte.js';
     let { node, lineage = [] } = $props();
 
-    function renameRoots(title) {
-        switch(title) {
-            case 'menu':
-                return 'Bookmark Menu'
-            case 'toolbar':
-                return 'Bookmark Toolbar'
-            case 'unfiled':
-                return 'Unfiled Bookmarks'
-            case 'mobile':
-                return 'Mobile Bookmarks'
-            default:
-                return title;
-        }
-    }
+    const showTags = new Set(["h3","a"])
+
 </script>
 
 {#snippet recursive(parent)}
@@ -33,25 +21,19 @@
 {/snippet}
 
 <div class={selection.bookmark === node ? "selected" : "regular"}>
-    <label class={node.root ? "topitem-text" : "folder-text"}>
-        <input
-            class="hide-radio"
-            type="radio"
-            checked={selection.bookmark === node}
-            onchange={() => selection.selectNew(node, lineage)}
-        />
-        {#if node.root} 
-            {renameRoots(node.title)}
-        {:else}
-            {node.title}
-        {/if}
-    </label>
-    {#if node.typeCode == 2}
-        {#if node.children}
-            {@render recursive(node)}
-        {:else}
-            <span class="placeholder"> Empty </span>
-        {/if}
+    {#if node.text}
+        <label>
+            <input
+                class="hide-radio"
+                type="radio"
+                checked={selection.bookmark === node}
+                onchange={() => selection.selectNew(node, lineage)}
+            />
+            {node.text}
+        </label>
+    {/if}
+    {#if node.children}
+        {@render recursive(node)}
     {/if}
 </div>
 
