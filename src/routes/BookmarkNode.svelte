@@ -2,6 +2,21 @@
     import BookmarkNode from "./BookmarkNode.svelte";
     import { selection } from './selectedBookmark.svelte.js';
     let { node, lineage = [] } = $props();
+
+    function renameRoots(title) {
+        switch(title) {
+            case 'menu':
+                return 'Bookmark Menu'
+            case 'toolbar':
+                return 'Bookmark Toolbar'
+            case 'unfiled':
+                return 'Unfiled Bookmarks'
+            case 'mobile':
+                return 'Mobile Bookmarks'
+            default:
+                return title;
+        }
+    }
 </script>
 
 {#snippet recursive(parent)}
@@ -17,14 +32,19 @@
     </ul>
 {/snippet}
 
-<div>
-    <label class={node.root ? "topitem-text hide-radio" : "folder-text hide-radio"}>
+<div class={selection.bookmark === node ? "selected" : "regular"}>
+    <label class={node.root ? "topitem-text" : "folder-text"}>
         <input
+            class="hide-radio"
             type="radio"
             checked={selection.bookmark === node}
             onchange={() => selection.selectNew(node, lineage)}
         />
-        {node.title}
+        {#if node.root} 
+            {renameRoots(node.title)}
+        {:else}
+            {node.title}
+        {/if}
     </label>
     {#if node.typeCode == 2}
         {#if node.children}
@@ -48,15 +68,15 @@
         border-radius: 4px;
     }
     .folder-text {
-        white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
         text-align: left;
         max-width: 320px;
     }
     .topitem-text {
-        white-space: nowrap;
+        white-space: hidden;
         overflow: hidden;
+        text-overflow: ellipsis;
         font-size: large;
         text-align: center;
         border: solid;
@@ -66,8 +86,13 @@
         height: 0;
         width: 0;
     } 
-    input[type="radio"]:checked{
-        background-color: #58ba83;
+    .regular {
+        word-wrap: normal;
+        text-overflow: ellipsis;
+    }
+    .selected {
+        overflow: hidden;
+        background-color: #004b21;
     }
     .placeholder {
         font-size: large;

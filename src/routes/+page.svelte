@@ -6,10 +6,10 @@
   let bookmarkData = $state(null);
   let errorMsg = $state("");
 
-  function handleFileUpload(event) {
+  function handleJSONUpload(event) {
     const file = event.target.files[0];
     if (!file) return;
-  
+
     const reader = new FileReader();
     reader.onload = (e) => {
       try {
@@ -17,44 +17,93 @@
         errorMsg = "";
       } catch (err) {
         errorMsg = "Invalid JSON file.";
-        bookmarkData = null;
       }
-      selection.clear();
     };
     reader.readAsText(file);
   }
 
-  function exportJSON() {
-    if (!bookmarkData) return;
-    const jsonString = JSON.stringify(bookmarkData, null, 2);
-    const blob = new Blob([jsonString], { type: "application/json" });
+  function handleHTMLUpload(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      try {
+          const parser = new DOMParser();
+          const parsedData = parser.parseFromString(e.target.result, "text/html")
+          const obj = elementToObj(parsedData.body);
+          console.log(obj.children)
+      } catch (err) {
+        errorMsg = "Failed to read HTML.";
+      }
+    }
+    reader.readAsText(file);
+  } 
+
+  function elementToObj(element) {
+    const obj = {
+      tag: element.tagName.toLowerCase(),
+      attributes: {},
+      children: [],
+      text: ""
+    };
+
+    if (element.hasAttributes()) {
+      for (const attr of element.attributes) {
+        obj.attributes[attr.name] = attr.value;
+      }
+    }
+
+    for (const child of element.childNodes) {
+      if (child.nodeType === Node.ELEMENT_NODE) {
+        obj.children.push(elementToObj(child));
+      } else if (child.nodeType === Node.TEXT_NODE) {
+        const trimmed = child.textContent.trim();
+        if (trimmed) {
+          obj.text += (obj.text ? " " : "") + trimmed;
+        }
+      }
+    }
+
+    return obj;
+  }
+
+  function exportData(data, dataType, fileName) {
+    const blob = new Blob([data], { type: dataType });
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
     link.href = url;
-    link.download = "firefox_bookmarks_edited.json";
+    link.download = fileName;
     link.click();
     URL.revokeObjectURL(url);
   }
 
-  function unloadJSON() {
+  function exportJSON(data) {
+    const jsonString = JSON.stringify(data, null, 2);
+    exportData(jsonString, "application/json", "bookmarks.json");
+  }
+
+  function unloadBookmarkData() {
     bookmarkData = null;
     editingData = null;
   }
 
 </script>
 
-
 <main class="container">
+  <h1 class="title">BookmarkCFG</h1>
   <div class="toolbar">
     <label class="file-upload">
       Import Bookmarks JSON
-      <input type="file" accept=".json" onchange={handleFileUpload} />
+      <input type="file" accept=".json" onchange={handleJSONUpload} />
     </label>
+    <label class="file-upload">
+      Import Bookmarks HTML
+      <input type="file" accept=".html" onchange={handleHTMLUpload} />
+    </label>
+    <button>Export HTML</button>
     {#if bookmarkData}
-      <button onclick={exportJSON} class="export-btn">Export Bookmarks</button>
-    {/if}
-    {#if bookmarkData}
-      <button onclick={unloadJSON} class="export-btn">Unload Bookmarks</button>
+      <button onclick={exportJSON} class="btn">Export Bookmarks</button>
+      <button onclick={unloadBookmarkData} class="btn">Unload Bookmarks</button>
     {/if}
   </div>
 
@@ -64,7 +113,7 @@
 
   {#if bookmarkData}
     <div class="workspace">
-      <div class="pane tree-pane">
+      <div class="pane">
         {#if bookmarkData.children}
           {#each bookmarkData.children as child}
             <BookmarkNode node={child} />
@@ -73,7 +122,7 @@
           <p>No compatible bookmark entries discovered.</p>
         {/if}
       </div>
-      <div class="editor-card">
+      <div class="pane">
           <Editor/>
       </div>
     </div>
@@ -93,8 +142,13 @@
     margin: 0 auto; 
   }
 
+  .title {
+    font-weight: bold;
+  }
+
   .toolbar { 
     display: flex; 
+    flex-direction: row;
     gap: 16px; 
     margin-bottom: 24px; 
   }
@@ -111,9 +165,7 @@
     display: none; 
   }
 
-  .export-btn {
-    background: #007443;
-    border: none;
+  .btn {
     padding: 10px 18px;
     border-radius: 6px;
     font-weight: 600;
@@ -121,40 +173,40 @@
   }
 
   .workspace {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
+    display: flex;
+    flex-direction: row;
     gap: 24px;
-    height: 80vh;
-    min-height: 500px;
   }
   
   .pane {
     background: #1e1e1e;
-    border: 1px solid #333;
+    border: 4px solid #333;
     border-radius: 8px;
     padding: 20px;
     overflow-y: auto;
+    height: 80vh;
+    width: 50%;
   }
-  
-  /* Tree Navigation Components */
 
-
-  /* Right Inspector Layout styles */
-  .editor-card { background: #262626; padding: 20px; border-radius: 6px; border: 1px solid #444; }
-  .field { display: flex; flex-direction: column; gap: 6px; margin-bottom: 16px; }
-  .field span { font-size: 0.85rem; color: #aaa; text-transform: uppercase; letter-spacing: 0.5px; }
-  input[type="text"] {
-    background: #121212;
-    border: 1px solid #444;
-    color: #fff;
-    padding: 8px 12px;
-    border-radius: 4px;
-    font-size: 1rem;
+  @media (max-width: 768px) {
+    .toolbar {
+      flex-direction: column;
+    }
+    .file-upload {
+      width: 80%;
+    }
+    .btn {
+      width: 80%;
+    }
+    .workspace {
+      flex-direction: column;
+      height: 80vh;
+    }
+    .pane {
+      width: 80%;
+      height: 50vh;
+    }
   }
-  .url-field { color: #00b4d8; }
-  .hint-text { font-size: 0.8rem; color: #666; margin-top: 20px; text-align: right; }
-  .empty-state { text-align: center; color: #777; padding-top: 100px; font-style: italic; }
-  
-  .placeholder { text-align: center; color: #666; padding: 60px; border: 2px dashed #333; border-radius: 8px; margin-top: 40px; }
+
   .error { color: #ff4a4a; }
 </style>
