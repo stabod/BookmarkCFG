@@ -2,9 +2,6 @@
     import BookmarkNode from "./BookmarkNode.svelte";
     import { selection } from './selectedBookmark.svelte.js';
     let { node, lineage = [] } = $props();
-
-    const showTags = new Set(["h3","a"])
-
 </script>
 
 {#snippet recursive(parent)}
@@ -23,6 +20,10 @@
 <div class={selection.bookmark === node ? "selected" : "regular"}>
     {#if node.text}
         <label>
+        {#if node.tag === "H1"}📕{/if}
+        {#if node.tag === "H3"}📁{/if}
+        {#if node.tag === "A"}<img alt="bookmark icon" src={node.attributes.icon}/>{/if}
+    
             <input
                 class="hide-radio"
                 type="radio"

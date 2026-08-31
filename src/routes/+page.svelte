@@ -28,17 +28,76 @@
     const reader = new FileReader();
     reader.onload = (e) => {
       try {
+          let text = e.target.result;
+          text = text.replaceAll(/<DT>/g, "");
+          text = text.replaceAll(/<p>/g, "");
+          console.log(text);
           const parser = new DOMParser();
-          const parsedData = parser.parseFromString(e.target.result, "text/html")
-          const obj = elementToObj(parsedData.body);
-          console.log(obj.children)
-          bookmarkData = obj.children
+          const parsedData = parser.parseFromString(text, "text/html")
+          const obj = parseHTML(parsedData); 
+          console.log(parsedData.body);
+          console.log("----------------");
+          console.log(obj)
+          bookmarkData = obj;
       } catch (err) {
-        errorMsg = "Failed to read HTML.";
+        errorMsg = err;
       }
     }
     reader.readAsText(file);
   } 
+
+  function parseHTML(element) {
+    const walker = document.createTreeWalker(element, NodeFilter.SHOW_ALL);
+    const stack = [];
+    const containers = new Set(["H1", "H3"]);
+    const bookmarks = new Set(["A"]);
+    const allowed = containers.union(bookmarks);
+
+    let current = walker.nextNode();
+    while (current) {
+      if (allowed.has(current.tagName)) {
+        stack.push(newObject(current));
+      }
+      current = walker.nextNode();
+    }
+
+    let newChildren = [];
+    let bottom = stack[0];
+    let top = null;
+    while (stack.length > 0) {
+      top = stack.pop();
+      if (bookmarks.has(top.tag)) {
+        newChildren.unshift(top);
+      } else if (containers.has(top.tag)) {
+        top.children = [...newChildren];
+        newChildren = [];
+        newChildren.unshift(top);
+      }
+    }
+    return bottom;
+  }
+
+  function newObject(element) {
+    const obj = {
+      tag: element.tagName,
+      attributes: {},
+      children: [],
+      text: ""
+    };
+
+    if (element.hasAttributes()) {
+      for (const attr of element.attributes) {
+        obj.attributes[attr.name] = attr.value;
+      }
+    }
+
+    const trimmed = element.textContent.trim();
+    if (trimmed) {
+      obj.text += (obj.text ? " " : "") + trimmed;
+    }
+
+    return obj;
+  }
 
   function elementToObj(element) {
     const obj = {
@@ -116,9 +175,7 @@
   {#if bookmarkData}
     <div class="workspace">
       <div class="pane">
-        {#each bookmarkData as child}
-            <BookmarkNode node={child} />
-        {/each}
+        <BookmarkNode node={bookmarkData} />
       </div>
       <div class="pane">
           <Editor/>

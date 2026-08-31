@@ -4,10 +4,10 @@
     function prettyLineage() {
         let string = ""
         for (let ansestor of selection.lineage) {
-            string += ansestor.title
+            string += ansestor.text
             string += ' > '
         }
-        string += selection.bookmark.title
+        string += selection.bookmark.text
         return string
     }
 
@@ -43,15 +43,7 @@
     <label>
         <span class="label-text">URI</span>
         <br>
-        <input type="text" bind:value={selection.bookmark.uri}/>
-    </label>
-    <br>
-    <label>
-        <span class="label-text">Icon URI</span>
-        <br>
-        <input type="text" bind:value={selection.bookmark.iconUri}/>
-        <br>
-        <img class="icon" src={selection.bookmark.iconUri} alt='' style='width: 32px; height: 32px'/>
+        <input type="text" bind:value={selection.bookmark.attributes.href}/>
     </label>
     <br>
 {/snippet}
@@ -69,7 +61,7 @@
         <br>
         <div class="fields">
             {@render commonFields()}
-            {#if selection.bookmark.typeCode == 1}
+            {#if selection.bookmark.tag === "A"}
                 {@render bookmarkSpecific()} 
             {/if}
         </div>
