@@ -1,13 +1,13 @@
 <script>
-    import { selection } from './selectedBookmark.svelte.js'
+    import { selectedBookmark } from '$lib/selectedBookmark.svelte.js'
 
     function prettyLineage() {
         let string = ""
-        for (let ansestor of selection.lineage) {
+        for (let ansestor of selectedBookmark.lineage) {
             string += ansestor.text
             string += ' > '
         }
-        string += selection.bookmark.text
+        string += selectedBookmark.bookmark.text
         return string
     }
 
@@ -22,19 +22,19 @@
     <label>
         <span class="label-text">Title</span>
         <br>
-        <input type="text" bind:value={selection.bookmark.text}/>
+        <input type="text" bind:value={selectedBookmark.bookmark.text}/>
     </label>
     <br>
     <label>
         <span class="label-text">Date Added</span>
         <br>
-        <input type="number" bind:value={selection.bookmark.attributes.add_date}/>
+        <input type="number" bind:value={selectedBookmark.bookmark.attributes.add_date}/>
     </label>
     <br>
     <label>
         <span class="label-text">Date Modified</span>
         <br>
-        <input type="number" bind:value={selection.bookmark.attributes.last_modified}/>
+        <input type="number" bind:value={selectedBookmark.bookmark.attributes.last_modified}/>
     </label>
     <br>
 {/snippet}
@@ -43,25 +43,25 @@
     <label>
         <span class="label-text">URI</span>
         <br>
-        <input type="text" bind:value={selection.bookmark.attributes.href}/>
+        <input type="text" bind:value={selectedBookmark.bookmark.attributes.href}/>
     </label>
     <br>
 {/snippet}
 
 {#snippet modifyButtons()}
-    <button onclick={() => selection.moveUp()}>Move Up</button> 
-    <button onclick={() => selection.moveDown()}>Move Down</button>
-    <button onclick={() => selection.clear()}>Unselect</button>
+    <button onclick={() => selectedBookmark.moveUp()}>Move Up</button> 
+    <button onclick={() => selectedBookmark.moveDown()}>Move Down</button>
+    <button onclick={() => selectedBookmark.clear()}>Unselect</button>
 {/snippet}
 
 <div>
-    {#if selection.bookmark == null}
-        <span>Nothing is selected</span>
+    {#if selectedBookmark.bookmark == null}
+        <div class="no-selection">No selection</div>
     {:else}
         <br>
         <div class="fields">
             {@render commonFields()}
-            {#if selection.bookmark.tag === "A"}
+            {#if selectedBookmark.bookmark.tag === "A"}
                 {@render bookmarkSpecific()} 
             {/if}
         </div>
@@ -79,10 +79,18 @@
         flex-direction: column;
         margin-top: 8px;
     }
+
     .label-text {
         font-size: large;
         box-sizing: border-box;
         margin: 4px;
+    }
+
+    .no-selection {
+        align-items: center;
+        text-align: center;
+        font-size: larger;
+        font-style: bold;
     }
 
     input[type="text"] {
@@ -102,18 +110,13 @@
     }
 
     button {
-    background: #00b4d8;
-    border: none;
-    padding: 10px 18px;
-    margin: 3px;
-    border-radius: 6px;
-    font-weight: 600;
-    cursor: pointer;
-    color: #050505;
-
-    .modify-buttons {
-        display: flex;
-        flex-direction: row;
+        background-color: var(--secondaryHighlightColor);
+        border: none;
+        padding: 10px 18px;
+        margin: 3px;
+        border-radius: 6px;
+        font-weight: 600;
+        cursor: pointer;
+        color: #050505;
     }
-  }
 </style>

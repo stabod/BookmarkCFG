@@ -1,4 +1,4 @@
-export const selection = $state({
+export const selectedBookmark = $state({
     bookmark: null,
     lineage: [],
     selectNew(bookmark, lineage) {
