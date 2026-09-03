@@ -18,34 +18,20 @@
     }
 </script>
 
-{#snippet commonFields()}
-    <label>
-        <span class="label-text">Title</span>
-        <br>
-        <input type="text" bind:value={selectedBookmark.bookmark.text}/>
-    </label>
-    <br>
-    <label>
-        <span class="label-text">Date Added</span>
-        <br>
-        <input type="number" bind:value={selectedBookmark.bookmark.attributes.add_date}/>
-    </label>
-    <br>
-    <label>
-        <span class="label-text">Date Modified</span>
-        <br>
-        <input type="number" bind:value={selectedBookmark.bookmark.attributes.last_modified}/>
-    </label>
-    <br>
-{/snippet}
+{#snippet editFields()}
+    <label class="label-text" for="bookmark-text-input">Text</label>
+    <input id="bookmark-text-input" type="text" bind:value={selectedBookmark.bookmark.text} />
 
-{#snippet bookmarkSpecific()}
-    <label>
-        <span class="label-text">URI</span>
-        <br>
-        <input type="text" bind:value={selectedBookmark.bookmark.attributes.href}/>
-    </label>
-    <br>
+    <label class="label-text" for="bookmark-date-added-input">Date Added</label>
+    <input id="bookmark-date-added-input" type="number" bind:value={selectedBookmark.bookmark.attributes.add_date}/>
+
+    <label class="label=text" for="bookmark-last-modified-input">Last Modified</label>
+    <input id="bookmark-last-modified-input" type="number" bind:value={selectedBookmark.bookmark.attributes.last_modified} 
+            disabled={selectedBookmark.bookmark.tag === "A" ? true : false}/>
+
+    <label class="label-text" for="bookmark-URL-input">URL</label>
+    <input id="bookmark-URL-input" type="text" bind:value={selectedBookmark.bookmark.attributes.href} 
+            disabled={selectedBookmark.bookmark.tag === "H3" ? true : false}/>
 {/snippet}
 
 {#snippet modifyButtons()}
@@ -54,26 +40,20 @@
     <button onclick={() => selectedBookmark.clear()}>Unselect</button>
 {/snippet}
 
-<div>
+<section>
+    <h2>Editor</h2>
     {#if selectedBookmark.bookmark == null}
-        <div class="no-selection">No selection</div>
+        <p class="no-selection">No selection</p>
     {:else}
-        <br>
-        <div class="fields">
-            {@render commonFields()}
-            {#if selectedBookmark.bookmark.tag === "A"}
-                {@render bookmarkSpecific()} 
-            {/if}
-        </div>
-        <div class="modify-buttons">
+        {@render editFields()}
+        <div>
             {@render modifyButtons()}
         </div>
-        <span>{prettyLineage()}</span>
     {/if}
-</div>
+</section>
 
 <style>
-    label {
+    section {
         display: flex;
         align-items: center;
         flex-direction: column;
@@ -110,7 +90,7 @@
     }
 
     button {
-        background-color: var(--secondaryHighlightColor);
+        background-color: var(--highlightColor);
         border: none;
         padding: 10px 18px;
         margin: 3px;

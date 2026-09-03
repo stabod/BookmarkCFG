@@ -44,6 +44,7 @@ function escapeHTML(str) {
   }
   return newStr;
 }
+
 /* Non-recursive approach that uses a Map to link
  * between the DL elements and the header elements.
  * Flatteing the sturcture like this makes it easier
@@ -103,7 +104,7 @@ function exportData(data, dataType, fileName) {
  * It is messy, as it needs to reinsert the <DL>, <DT>
  * and <p> tags back into the structure.
  */
-export function exportHTML() {
+export function exportHTML(bookmarkData) {
   let text = '<!DOCTYPE NETSCAPE-Bookmark-file-1>\n<\
 !-- This is an automatically generated file.\n\
     It will be read and overwritten.\n\

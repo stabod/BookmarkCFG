@@ -1,13 +1,17 @@
 export const selectedBookmark = $state({
     bookmark: null,
     lineage: [],
-    selectNew(bookmark, lineage) {
+    bookmarkElement: null,
+    selectNew(bookmark, lineage, element) {
         this.bookmark = bookmark;
         this.lineage = lineage;
+        this.bookmarkElement = element;
     },
     clear() {
         this.bookmark = null;
         this.lineage = [];
+        this.bookmarkElement?.focus();
+        this.bookmarkElement = null;
     },
     moveUp() {
         if (this.bookmark == null || this.lineage == null) return;

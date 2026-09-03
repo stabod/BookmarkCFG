@@ -1,6 +1,9 @@
 <script>
+  import { setContext } from 'svelte';
+  import { SvelteSet } from 'svelte/reactivity';
   import BookmarkNode from './BookmarkNode.svelte';
   import Editor from './Editor.svelte';
+  import Popup from './Popup.svelte';
   import { selectedBookmark } from '../lib/selectedBookmark.svelte.js'
   import { parseHTML, exportHTML } from '$lib/importExport';
 
@@ -29,20 +32,22 @@
     selectedBookmark.selectNew(null, null);
   }
 
+  let foldedSet = new SvelteSet();
+  setContext('folded', new SvelteSet());
+
 </script>
 
+<title>BookmarkCFG Editor</title>
 <main class="container">
   <h1 class="title">BookmarkCFG</h1>
-  <div class="toolbar">
-    <label class="file-upload">
-      Import Bookmarks HTML
-      <input type="file" accept=".html" onchange={handleHTMLUpload} />
-    </label>
+  <section class="toolbar">
+    <label for="HTML-file-upload-input">Import Bookmarks HTML</label>
+    <input class="file-upload" id="HTML-file-upload-input" type="file" accept=".html" onchange={handleHTMLUpload} />
     {#if bookmarkData}
-      <button onclick={exportHTML} class="btn">Export Bookmarks</button>
+      <button onclick={() => exportHTML(bookmarkData)} class="btn">Export Bookmarks</button>
       <button onclick={unloadBookmarkData} class="btn">Unload Bookmarks</button>
     {/if}
-  </div>
+  </section>
 
   {#if errorMsg}
     <p class="error">{errorMsg}</p>
@@ -70,7 +75,7 @@
 
 <style>
   :global(body) {
-    font-family: "Inconsolata", monospace;
+    font-family: sans-serif;
     background-color: var(--primaryColor);
     color: var(--textColor);
     margin: 0;
@@ -105,7 +110,7 @@
   }
 
   .btn {
-    background-color: var(--secondaryHighlightColor);
+    background-color: var(--highlightColor);
     padding: 10px 18px;
     border-radius: 6px;
     font-weight: 600;

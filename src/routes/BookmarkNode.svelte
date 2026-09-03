@@ -1,7 +1,18 @@
 <script>
+    import { getContext } from 'svelte';
     import BookmarkNode from "./BookmarkNode.svelte";
     import { selectedBookmark } from "$lib/selectedBookmark.svelte";
     let { node, lineage = [] } = $props();
+    const foldContext = getContext('folded');
+    const isFolded = $derived(foldContext?.has(node));
+
+    function toggleFold() {
+        if (isFolded) {
+            foldContext.delete(node);
+        } else {
+            foldContext.add(node);
+        }
+    }
 </script>
 
 {#snippet recursive(parent)}
@@ -17,40 +28,36 @@
     </ul>
 {/snippet}
 
-<div class={selectedBookmark.bookmark === node ? "selected" : "regular"}>
-        {#if node.text}
-            <label>
-            {#if node.tag === "H1"}📕{/if}
-            {#if node.tag === "H3"}📁{/if}
-            {#if node.tag === "A"}<img alt="bookmark icon" src={node.attributes.icon} class="bookmark-icon"/>{/if}
-                <input
-                    class="hide-radio"
-                    type="radio"
-                    checked={selectedBookmark.bookmark === node}
-                    onchange={() => selectedBookmark.selectNew(node, lineage)}
-                />
-                {node.text}
-            </label>
-        {/if}
-        {#if node.children}
-            {@render recursive(node)}
-        {/if}
-</div>
+
+<button class={selectedBookmark.bookmark === node ? "selected" : "regular"} 
+        onclick={() => selectedBookmark.selectNew(node, lineage, this)}>
+    {#if node.tag === "H3"}📁{/if}
+    {#if node.tag === "A"}<img alt='' src={node.attributes.icon} class="bookmark-icon"/>{/if}
+    {node.text}
+</button>
+{#if foldContext && node.tag === "H3"}
+    <button class="regular"
+            onclick={toggleFold}>
+        {isFolded ? 'Unfold' : 'Fold'}
+    </button>
+{/if}
+
+{#if !isFolded && node.children}
+    {@render recursive(node)}
+{/if}
+
 
 <style>
     .node-list {
         list-style: none;
+        border-radius: 4px;
+        border-left: 2px groove;
     }
     .node-item {
         margin: 4px 0;
         padding: 2px 4px;
-        border-radius: 4px;
+        
     }
-    input[type="radio"]{
-        visibility: hidden;
-        height: 0;
-        width: 0;
-    } 
     .regular {
         word-wrap: normal;
         text-overflow: ellipsis;
