@@ -28,19 +28,25 @@
     </ul>
 {/snippet}
 
-
-<button class={selectedBookmark.bookmark === node ? "selected" : "regular"} 
-        onclick={() => selectedBookmark.selectNew(node, lineage, this)}>
-    {#if node.tag === "H3"}📁{/if}
-    {#if node.tag === "A"}<img alt='' src={node.attributes.icon} class="bookmark-icon"/>{/if}
-    {node.text}
-</button>
-{#if foldContext && node.tag === "H3"}
-    <button class="regular"
-            onclick={toggleFold}>
-        {isFolded ? 'Unfold' : 'Fold'}
+<div draggable="true">
+    <button class={selectedBookmark.bookmark === node ? "bookmark-btn selected" : "bookmark-btn"}
+            onclick={() => selectedBookmark.selectNew(node, lineage, this)}>
+        {#if node.tag === "H3"}
+            <img alt='' src="src/lib/assets/folder.png" class="bookmark-icon"/>
+        {/if}
+        {#if node.tag === "A"}
+            <img alt='' src={node.attributes.icon ? node.attributes.icon : "/src/lib/assets/star.png"} class="bookmark-icon"/>
+        {/if}
+        {node.text}
     </button>
-{/if}
+    {#if foldContext && node.tag === "H3"}
+        <button class="fold-btn"
+                onclick={toggleFold}>
+            {isFolded ? 'Unfold' : 'Fold'}
+        </button>
+    {/if}
+</div>
+
 
 {#if !isFolded && node.children}
     {@render recursive(node)}
@@ -53,18 +59,35 @@
         border-radius: 4px;
         border-left: 2px groove;
     }
+
     .node-item {
         margin: 4px 0;
         padding: 2px 4px;
         
     }
-    .regular {
-        word-wrap: normal;
-        text-overflow: ellipsis;
+
+    .bookmark-icon {
+        height: 16px;
+        width: 16px;
     }
+
+    .bookmark-btn {
+        background-color: var(--accent-color-1);
+        color: var(--text-color);
+        padding: 4px 8px;
+        border-radius: 6px;
+        border-style:outset;
+        border-color: var(--border-color);
+        cursor: pointer;
+        font-size: 1em;
+    }
+
     .selected {
-        word-wrap: normal;
-        text-overflow: ellipsis;
-        background-color: var(--highlightColor);
+        background-color: var(--accent-color-4);
+    }
+
+    .fold-btn {
+        padding: 4px 8px;
+        font-weight: 400;
     }
 </style>
