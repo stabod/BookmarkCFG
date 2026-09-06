@@ -10,25 +10,22 @@
 
   let bookmarkData = $state(null);
   let errorMsg = $state("");
-  let isDark = browser ? window.matchMedia('(prefers-color-scheme: dark)').matches : false; 
+  let isDark = browser ? window.matchMedia('(prefers-color-scheme: dark)').matches : false;
 
-  function handleHTMLUpload(event) {
-    const file = event.target.files[0];
+  async function handleUpload(event) {
+    const file = event.target.files?.[0];
     if (!file) return;
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      try {
-          const text = e.target.result;
-          const obj = parseHTML(text);
-          bookmarkData = obj;
-      } catch (err) {
-        errorMsg = err;
-      }
-      selectedBookmark.selectNew(null, null);
+
+    try {
+      const text = await file.text();
+      bookmarkData = parseHTML(text);
+    } catch (err) {
+      errorMsg = err.message;
+      bookmarkData = null;
     }
-    reader.readAsText(file);
-  } 
- 
+    selectedBookmark.selectNew(null, null, null);
+  }
+
   function unloadBookmarkData() {
     bookmarkData = null;
     selectedBookmark.selectNew(null, null);
@@ -58,10 +55,10 @@
 {/snippet}
 
 {#snippet uploadElements()}
-  <div style="flex: 1; display:flex; justify-content: center; align-items: center;">
+  <div class="upload-holder">
       <label class="upload-dialog" for="HTML-file-upload-input">
         <span>Import bookmarks</span>
-        <input class="file-upload" id="HTML-file-upload-input" type="file" accept=".html" onchange={handleHTMLUpload} />
+        <input class="file-upload" id="HTML-file-upload-input" type="file" accept=".html" onchange={handleUpload}/>
       </label>
     </div>
 {/snippet}
@@ -133,6 +130,12 @@
     column-gap: 16px;
     margin: 8px;
   }
+  
+  .upload-holder {
+    display:flex; 
+    justify-content: center; 
+    align-items: center;
+  }
 
   .upload-dialog {
     background: var(--surface-color);
@@ -155,7 +158,7 @@
     display: flex;
     flex-direction: row;
     max-height: 675px;
-    gap: 24px;
+    gap: 16px;
   }
   
   .pane {
