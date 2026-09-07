@@ -2,8 +2,7 @@
   import { setContext } from 'svelte';
   import { browser } from '$app/environment';
   import { SvelteSet } from 'svelte/reactivity';
-  import BookmarkNode from './BookmarkNode.svelte';
-  import Editor from './Editor.svelte';
+  import Workspace from './Workspace.svelte';
   import HelpPopup from './HelpPopup.svelte';
   import { selectedBookmark } from '../lib/selectedBookmark.svelte.js'
   import { parseHTML, exportHTML } from '$lib/importExport';
@@ -11,6 +10,9 @@
   let bookmarkData = $state(null);
   let errorMsg = $state("");
   let isDark = browser ? window.matchMedia('(prefers-color-scheme: dark)').matches : false;
+
+  setContext('folded', new SvelteSet());
+  setContext('bookmarkData', () => bookmarkData);
 
   async function handleUpload(event) {
     const file = event.target.files?.[0];
@@ -30,8 +32,6 @@
     bookmarkData = null;
     selectedBookmark.selectNew(null, null);
   }
-
-  setContext('folded', new SvelteSet());
 
   function changeTheme() {
     if (isDark) {
@@ -65,25 +65,12 @@
 
 {#snippet toolbarElements()}
   <div class="toolbar">
-     <button onclick={() => exportHTML(bookmarkData)} class="btn">Export as HTML</button>
-     <button onclick={unloadBookmarkData} class="btn warning">Unload bookmarks</button>
+     <button class="strech-button" onclick={() => exportHTML(bookmarkData)}>Export as HTML</button>
+     <button class="strech-button warning" onclick={unloadBookmarkData}>Unload bookmarks</button>
    </div>
 {/snippet}
 
-{#snippet workspaceElements()}
-  <div class="workspace">
-      <section class="pane">
-        <h2>Bookmark Tree</h2>
-        {#each bookmarkData.children as child}
-          <BookmarkNode node={child} />
-        {/each}
-      </section>
-      <section class="pane">
-        <h2>Editor</h2>
-        <Editor/>
-      </section>
-    </div>
-{/snippet}
+
 
 <title>BookmarkCFG Editor</title>
 <main class="main-container">
@@ -97,7 +84,7 @@
     {@render uploadElements()}
   {:else}
     {@render toolbarElements()}
-    {@render workspaceElements()}
+    <Workspace/>
   {/if}
 </main>
 
@@ -109,6 +96,13 @@
     margin: 16px;
     display: flex;
     flex-direction: column;
+    min-height: 95vh;
+  }
+
+  .main-container {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
   }
 
   .title {
@@ -124,9 +118,10 @@
   }
 
   .toolbar { 
-    display: grid; 
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: baseline;
     column-gap: 16px;
     margin: 8px;
   }
@@ -154,23 +149,6 @@
     align-items: center;
   }
   
-  .workspace {
-    display: flex;
-    flex-direction: row;
-    max-height: 675px;
-    gap: 16px;
-  }
-  
-  .pane {
-    background: var(--surface-color);
-    border: 4px solid var(--border-color);
-    border-radius: 8px;
-    padding: 20px;
-    max-height: 80%;
-    overflow-y:scroll;
-    width: 50%;
-  }
-
   .warning {
     background-color: var(--warning-color);
   }

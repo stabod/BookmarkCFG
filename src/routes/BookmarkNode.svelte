@@ -40,7 +40,7 @@
         {node.text}
     </button>
     {#if foldContext && node.tag === "H3"}
-        <button class="fold-btn"
+        <button class={["fold-btn", isFolded && "folded-btn"]}
                 onclick={toggleFold}>
             {isFolded ? 'Unfold' : 'Fold'}
         </button>
@@ -89,5 +89,9 @@
     .fold-btn {
         padding: 4px 8px;
         font-weight: 400;
+    }
+
+    .folded-btn {
+        background-color: var(--accent-color-3);
     }
 </style>

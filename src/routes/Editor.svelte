@@ -77,18 +77,16 @@
     {/if}
 {/snippet}
 
-<section>
-    {#if selectedBookmark.bookmark == null}
-        <p class="no-selection">No selection</p>
-    {:else}
-        <div class="field-holder">
-            {@render editFields()}
-        </div>
-        <div class="button-holder">
-            {@render modifyButtons()}
-        </div>
-    {/if}
-</section>
+{#if selectedBookmark.bookmark == null}
+    <p class="no-selection">No selection</p>
+{:else}
+    <div class="field-holder">
+        {@render editFields()}
+    </div>
+    <div class="button-holder">
+        {@render modifyButtons()}
+    </div>
+{/if}
 
 <style>
     .field-holder {
@@ -126,17 +124,6 @@
         text-align: center;
         font-size: larger;
         font-style: bold;
-    }
-    
-    input[type="text"],
-    input[type="datetime-local"],
-    input[type="number"] {
-        width: 90%;
-        padding: 8px;
-        border-radius: 8px;
-        font-size: 1em;
-        box-sizing: border-box;
-        border-style: inset;
     }
     
 </style>
