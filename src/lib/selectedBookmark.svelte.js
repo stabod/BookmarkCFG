@@ -1,3 +1,5 @@
+import { Bookmark, HEADER_TAGS } from "./bookmark.svelte";
+
 export const selectedBookmark = $state({
     bookmark: null,
     lineage: [],
@@ -46,6 +48,13 @@ export const selectedBookmark = $state({
         const tmp = siblings[index];
         siblings[index] = siblings[next];
         siblings[next] = tmp;
+    },
+    newBookmark() {
+        if (!HEADER_TAGS.has(this.bookmark.tag)) return;
+        const book = Bookmark.createNewBookmark();
+        this.bookmark.children.push(book);
+        this.bookmark = book;
+        this.lineage.push(book);
     }
 })
 

@@ -1,5 +1,6 @@
 <script>
     import { selectedBookmark } from '$lib/selectedBookmark.svelte.js'
+    import { HEADER_TAGS } from '$lib/bookmark.svelte';
 
     const DATETIME_LOCAL_STR_LENGHT = 19;
     const MILLISECONDS = 1000;
@@ -25,7 +26,7 @@
         const localMS = ms - (date.getTimezoneOffset() * MINUTES_IN_MILLISECONDS);
         const localDate = new Date(localMS);
         const str = localDate.toISOString();
-        return str.slice(0, DATETIME_LOCAL_STR_LENGHT);
+        return str.slice(0, DATETIME_LOCAL_STR_LENGHT); /* Ignores milliseconds and Z */
     }
 
     function dateToTimestamp(dateStr) {
@@ -68,9 +69,12 @@
 {/snippet}
 
 {#snippet modifyButtons()}
-    <button class="btn" onclick={() => selectedBookmark.moveUp()}>Move Up</button> 
-    <button class="btn" onclick={() => selectedBookmark.moveDown()}>Move Down</button>
-    <button class="btn" onclick={() => selectedBookmark.clear()}>Unselect</button>
+    <button onclick={() => selectedBookmark.moveUp()}>Move Up</button> 
+    <button onclick={() => selectedBookmark.moveDown()}>Move Down</button>
+    <button onclick={() => selectedBookmark.clear()}>Unselect</button>
+    {#if HEADER_TAGS.has(selectedBookmark.bookmark.tag)}
+        <button onclick={() => selectedBookmark.newBookmark()}>New</button>
+    {/if}
 {/snippet}
 
 <section>
