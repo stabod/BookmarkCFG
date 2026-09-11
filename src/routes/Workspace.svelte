@@ -3,6 +3,7 @@
     import BookmarkNode from './BookmarkNode.svelte';
     import Editor from './Editor.svelte';
     import Search from './Search.svelte';
+    import Stats from './Stats.svelte';
     let openTab = $state(0);
     const bookmarkData = getContext('bookmarkData');
 </script>
@@ -17,7 +18,7 @@
 {#snippet editorTab()}
     <section class="pane">
         <h2>Bookmark Tree</h2>
-        {#each bookmarkData().children as child}
+        {#each bookmarkData.getBookmarks() as child}
             <BookmarkNode node={child} />
         {/each}
     </section>
@@ -35,7 +36,7 @@
 
 {#snippet statTab()}    
     <section class="pane">
-        TODO    
+       <Stats/> 
     </section>
 {/snippet}
 
@@ -62,10 +63,11 @@
 
 <style>
     .tab-button-holder {
+        background-color: var(--surface-color);
+        border: 4px solid var(--border-color);
         display: flex;
         flex-direction: row;
         justify-content: space-evenly;
-        gap: 2px;
         margin: 0px;
     }
     .tab-button {
@@ -89,5 +91,14 @@
         padding: 16px;
         min-width: 0;
         overflow-y:scroll;
+    }
+    @media (max-width:784) {
+        .workspace {
+            flex-direction: column;
+        }
+        .pane {
+            width: 80%;
+            height: 50vh;
+        }
     }
 </style>

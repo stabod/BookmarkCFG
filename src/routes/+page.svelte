@@ -4,15 +4,17 @@
   import { SvelteSet } from 'svelte/reactivity';
   import Workspace from './Workspace.svelte';
   import HelpPopup from './HelpPopup.svelte';
-  import { selectedBookmark } from '../lib/selectedBookmark.svelte.js'
-  import { parseHTML, exportHTML } from '$lib/importExport';
+  import { BookmarkData } from '$lib/bookmark-data.svelte.js'; 
+  import { Selection } from '$lib/selection.svelte.js';
 
-  let bookmarkData = $state(null);
+  const bookmarkData = new BookmarkData();
+  const selection = new Selection(bookmarkData);
   let errorMsg = $state("");
   let isDark = browser ? window.matchMedia('(prefers-color-scheme: dark)').matches : false;
 
   setContext('folded', new SvelteSet());
-  setContext('bookmarkData', () => bookmarkData);
+  setContext('bookmarkData', bookmarkData);
+  setContext('selection', selection);
 
   async function handleUpload(event) {
     const file = event.target.files?.[0];
@@ -20,17 +22,15 @@
 
     try {
       const text = await file.text();
-      bookmarkData = parseHTML(text);
+      bookmarkData.loadHTML(text);
     } catch (err) {
       errorMsg = err.message;
-      bookmarkData = null;
+      bookmarkData.clear();
     }
-    selectedBookmark.selectNew(null, null, null);
   }
 
   function unloadBookmarkData() {
-    bookmarkData = null;
-    selectedBookmark.selectNew(null, null);
+    bookmarkData.clear();
   }
 
   function changeTheme() {
@@ -49,7 +49,7 @@
     <h1 class="title">BookmarkCFG</h1>
     <div>
       <HelpPopup/>
-      <button class="btn" onclick={changeTheme}>Change Theme</button>
+      <button class="hidden-button" onclick={changeTheme}>Change Theme</button>
     </div>
   </div>
 {/snippet}
@@ -65,8 +65,8 @@
 
 {#snippet toolbarElements()}
   <div class="toolbar">
-     <button class="strech-button" onclick={() => exportHTML(bookmarkData)}>Export as HTML</button>
-     <button class="strech-button warning" onclick={unloadBookmarkData}>Unload bookmarks</button>
+     <button class="strech-button" onclick={() => exportHTML(bookmarkData.toHTML())}>Export as HTML</button>
+     <button class="strech-button warning" onclick={() => bookmarkData.clear()}>Unload bookmarks</button>
    </div>
 {/snippet}
 
@@ -80,7 +80,7 @@
     <p class="error">{errorMsg}</p>
   {/if}
 
-  {#if !bookmarkData}
+  {#if !bookmarkData.isLoaded()}
     {@render uploadElements()}
   {:else}
     {@render toolbarElements()}
@@ -159,14 +159,6 @@
     }
     .file-upload {
       width: 80%;
-    }
-    .workspace {
-      flex-direction: column;
-      height: 80vh;
-    }
-    .pane {
-      width: 80%;
-      height: 50vh;
     }
   }
 

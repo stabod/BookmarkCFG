@@ -1,6 +1,6 @@
 :root {
   color-scheme: light dark;
-  --background-color: light-dark(#99ddff, #12161A);
+  --background-color: light-dark(#b0dfdf, #12161A);
   --surface-color: light-dark(#9fb2d8, #313e4d);
   --border-color: light-dark(#e1e7ee, #414449);
   --accent-color-1: light-dark(#ddaaff, #774499);
@@ -35,6 +35,12 @@ input[type=file]::file-selector-button {
 
 .strech-button {
   width: 100%;
+}
+
+.hidden-button {
+  background-color: transparent;
+  border: none;
+  text-decoration: underline;
 }
 
 input[type="text"],

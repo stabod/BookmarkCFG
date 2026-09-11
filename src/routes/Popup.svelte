@@ -12,7 +12,7 @@
     });
 </script>
 
-<button class="btn" onclick={() => {isOpen = true;}}>{buttonText}</button>
+<button class="hidden-button" onclick={() => {isOpen = true;}}>{buttonText}</button>
 
 <dialog bind:this={dialog}>
   <h2>{title}</h2>

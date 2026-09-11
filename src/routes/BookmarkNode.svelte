@@ -1,8 +1,11 @@
 <script>
     import { getContext } from 'svelte';
     import BookmarkNode from "./BookmarkNode.svelte";
-    import { selectedBookmark } from "$lib/selectedBookmark.svelte";
+    import bookmarkIcon from "$lib/assets/star.png";
+    import folderIcon from "$lib/assets/folder.png";
     let { node, lineage = [] } = $props();
+
+    const selection = getContext('selection');
     const foldContext = getContext('folded');
     const isFolded = $derived(foldContext?.has(node));
 
@@ -29,17 +32,17 @@
 {/snippet}
 
 <div draggable="true">
-    <button class={selectedBookmark.bookmark === node ? "bookmark-btn selected" : "bookmark-btn"}
-            onclick={() => selectedBookmark.selectNew(node, lineage, this)}>
-        {#if node.tag === "H3"}
-            <img alt='' src="src/lib/assets/folder.png" class="bookmark-icon"/>
+    <button class={selection.isSelected(node) ? "bookmark-btn selected" : "bookmark-btn"}
+            onclick={() => selection.select(node)}>
+        {#if node.isFolder()}
+            <img alt='' src={folderIcon} class="bookmark-icon"/>
         {/if}
-        {#if node.tag === "A"}
-            <img alt='' src={node.attributes.icon ? node.attributes.icon : "/src/lib/assets/star.png"} class="bookmark-icon"/>
+        {#if !node.isFolder()}
+            <img alt='' src={node.attributes.icon ? node.attributes.icon : bookmarkIcon} class="bookmark-icon"/>
         {/if}
         {node.text}
     </button>
-    {#if foldContext && node.tag === "H3"}
+    {#if foldContext && node.isFolder()}
         <button class={["fold-btn", isFolded && "folded-btn"]}
                 onclick={toggleFold}>
             {isFolded ? 'Unfold' : 'Fold'}

@@ -1,20 +1,12 @@
 <script>
-    import { selectedBookmark } from '$lib/selectedBookmark.svelte.js'
-    import { HEADER_TAGS } from '$lib/bookmark.svelte';
+    import { getContext } from 'svelte';
+    import { HEADER_TAGS } from '$lib/html-utills';
 
     const DATETIME_LOCAL_STR_LENGHT = 19;
     const MILLISECONDS = 1000;
     const MINUTES_IN_MILLISECONDS = 60 * MILLISECONDS;
 
-    function prettyLineage() {
-        let string = ""
-        for (let ansestor of selectedBookmark.lineage) {
-            string += ansestor.text
-            string += ' > '
-        }
-        string += selectedBookmark.bookmark.text
-        return string
-    }
+    const selection = getContext('selection');
 
     function timestampToDate(timestamp) {
         if (!timestamp) {
@@ -39,16 +31,16 @@
 
 {#snippet editFields()}
     <label class="label-text" for="bookmark-text-input">Text</label>
-    <input id="bookmark-text-input" type="text" bind:value={selectedBookmark.bookmark.text} />
+    <input id="bookmark-text-input" type="text" bind:value={selection.selected.text} />
 
     <div class="date-holder">
         <label class="label-text" for="bookmark-date-added-input">Date Added</label>
         <label class="label-text" for="bookmark-date-added-input-timestamp">Date Added Timestamp</label>
 
         <input id="bookmark-date-added-input" type="datetime-local" 
-                bind:value={() => timestampToDate(selectedBookmark.bookmark.attributes.add_date),
-                            (v) => selectedBookmark.bookmark.attributes.add_date = dateToTimestamp(v)}/>
-        <input id="bookmark-date-added-input-timestamp" type="number" bind:value={selectedBookmark.bookmark.attributes.add_date}/>
+                bind:value={() => timestampToDate(selection.selected.attributes.add_date),
+                            (v) => selection.selected.attributes.add_date = dateToTimestamp(v)}/>
+        <input id="bookmark-date-added-input-timestamp" type="number" bind:value={selection.selected.attributes.add_date}/>
     </div>
 
    <div class="date-holder">
@@ -56,28 +48,29 @@
         <label class="label-text" for="bookmark-last-modified-input-timestamp">Last Modified Timestamp</label>
 
         <input id="bookmark-last-modified-input" type="datetime-local" 
-                bind:value={() => timestampToDate(selectedBookmark.bookmark.attributes.last_modified),
-                            (v) => selectedBookmark.bookmark.attributes.last_modified = dateToTimestamp(v)}/>
-        <input id="bookmark-last-modified-input-timestamp" type="number" bind:value={selectedBookmark.bookmark.attributes.last_modified}/>
+                bind:value={() => timestampToDate(selection.selected.attributes.last_modified),
+                            (v) => selection.selected.attributes.last_modified = dateToTimestamp(v)}/>
+        <input id="bookmark-last-modified-input-timestamp" type="number" bind:value={selection.selected.attributes.last_modified}/>
     </div> 
 
     
 
     <label class="label-text" for="bookmark-URL-input">URL</label>
-    <input id="bookmark-URL-input" type="text" bind:value={selectedBookmark.bookmark.attributes.href} 
-            disabled={selectedBookmark.bookmark.tag === "H3" ? true : false}/>
+    <input id="bookmark-URL-input" type="text" bind:value={selection.selected.attributes.href} 
+            disabled={selection.selected.tag === "H3" ? true : false}/>
 {/snippet}
 
 {#snippet modifyButtons()}
-    <button onclick={() => selectedBookmark.moveUp()}>Move Up</button> 
-    <button onclick={() => selectedBookmark.moveDown()}>Move Down</button>
-    <button onclick={() => selectedBookmark.clear()}>Unselect</button>
-    {#if HEADER_TAGS.has(selectedBookmark.bookmark.tag)}
-        <button onclick={() => selectedBookmark.newBookmark()}>New</button>
+    <button onclick={() => selection.moveUp()}>Move Up</button> 
+    <button onclick={() => selection.moveDown()}>Move Down</button>
+    <button onclick={() => selection.clear()}>Unselect</button>
+    {#if HEADER_TAGS.has(selection.selected.tag)}
+        <button onclick={() => selection.newBookmark()}>New</button>
+        <button onclick={() => selection.newFolder()}>New Folder</button>
     {/if}
 {/snippet}
 
-{#if selectedBookmark.bookmark == null}
+{#if selection.selected == null}
     <p class="no-selection">No selection</p>
 {:else}
     <div class="field-holder">
