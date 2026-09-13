@@ -1,32 +1,34 @@
 export class BookmarkStats {
 
-    data = $state(null)
-    #total = $derived(this.data != null ? this.data.length : 0);
-    #bookmarks = $derived(this.data != null ? this.data.filter((node) => !node.isFolder()).length : 0);
-    #folders = $derived(this.data != null ? this.data.filter((node) => node.isFolder()).length : 0);
+    #total
+    #bookmarks 
+    #folders 
+    #duplicatesArray
+    #duplicates
 
-    #duplicatesArray = [];
-    #duplicates = $derived(this.#findUniques());
+    constructor(data) {
+        this.data = data.getBookmarkArray();
+        this.#total = $derived(this.data.length);
+        this.#bookmarks = $derived(this.data.filter((node) => !node.isFolder()).length ?? 0);
+        this.#folders = $derived(this.data.filter((node) => node.isFolder()).length ?? 0);
+        this.#duplicatesArray = $derived.by(() => this.#findUniques());
+    }
 
     #findUniques() {
         if (this.data == null) { return 0; }
         const unique = new Map();
-        this.#duplicatesArray = [];
+        const arr = [];
         for (const el of this.data) {
             if (el.isFolder()) { 
                 continue; 
             }
             if (unique.has(el.attributes.href)) {
-                this.#duplicatesArray.push(el);
+                arr.push(el);
             } else {
-                unique.set(el.attributes.href, el)
+                unique.set(el.attributes.href, el);
             }
         }
-        return this.#duplicatesArray.length;
-    }
-
-    constructor(data) {
-        this.data = data;
+        return [...arr];
     }
 
     get total() {
@@ -43,9 +45,5 @@ export class BookmarkStats {
 
     get duplicatesArray() {
         return this.#duplicatesArray;
-    }
-
-    get duplicates() {
-        return this.#duplicates;
     }
 }

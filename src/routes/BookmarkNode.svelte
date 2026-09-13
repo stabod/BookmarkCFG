@@ -3,7 +3,7 @@
     import BookmarkNode from "./BookmarkNode.svelte";
     import bookmarkIcon from "$lib/assets/star.png";
     import folderIcon from "$lib/assets/folder.png";
-    let { node, lineage = [] } = $props();
+    let { node } = $props();
 
     const selection = getContext('selection');
     const foldContext = getContext('folded');
@@ -24,7 +24,6 @@
             <li class="node-item">
                 <BookmarkNode
                     node={child}
-                    lineage={[...lineage, parent]}
                 />
             </li>
         {/each}
@@ -67,11 +66,6 @@
         margin: 4px 0;
         padding: 2px 4px;
         
-    }
-
-    .bookmark-icon {
-        height: 16px;
-        width: 16px;
     }
 
     .bookmark-btn {

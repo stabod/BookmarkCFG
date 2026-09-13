@@ -50,17 +50,13 @@ export class Selection {
     newBookmark() {
         if (this.selected == null || this.data == null) return;
         if (!this.selected.isFolder()) return;
-        const book = Bookmark.newBookmark();
-        this.selected.children.push(book);
-        this.selected = book;
+        this.data.addNode(this.selected, false); 
     }
 
     newFolder() {
         if (this.selected == null || this.data == null) return;
         if(!this.selected.isFolder()) return;
-        const folder = Bookmark.newFolder();
-        this.selected.children.push(folder);
-        this.selected = folder;
+        this.data.addNode(this.selected, true);
     }
 
 

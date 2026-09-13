@@ -24,13 +24,9 @@
       const text = await file.text();
       bookmarkData.loadHTML(text);
     } catch (err) {
-      errorMsg = err.message;
+      errorMsg = err;
       bookmarkData.clear();
     }
-  }
-
-  function unloadBookmarkData() {
-    bookmarkData.clear();
   }
 
   function changeTheme() {
@@ -63,27 +59,17 @@
     </div>
 {/snippet}
 
-{#snippet toolbarElements()}
-  <div class="toolbar">
-     <button class="strech-button" onclick={() => exportHTML(bookmarkData.toHTML())}>Export as HTML</button>
-     <button class="strech-button warning" onclick={() => bookmarkData.clear()}>Unload bookmarks</button>
-   </div>
-{/snippet}
-
-
-
 <title>BookmarkCFG Editor</title>
 <main class="main-container">
   {@render titleElements()}
   
   {#if errorMsg}
-    <p class="error">{errorMsg}</p>
+    <p class="warning">{errorMsg}</p>
   {/if}
 
   {#if !bookmarkData.isLoaded()}
     {@render uploadElements()}
   {:else}
-    {@render toolbarElements()}
     <Workspace/>
   {/if}
 </main>
@@ -93,16 +79,20 @@
     font-family: sans-serif;
     background-color: var(--background-color);
     color: var(--text-color);
-    margin: 16px;
+    margin: 0;
+    padding: 0;
+    width: 100vw;
+    height: 100dvh;
+    overflow: hidden;
     display: flex;
-    flex-direction: column;
-    min-height: 95vh;
+    justify-content: center;
   }
 
   .main-container {
     display: flex;
     flex-direction: column;
-    flex-grow: 1;
+    height: 97.5%;
+    width: 95%;
   }
 
   .title {
@@ -117,15 +107,6 @@
     align-items: center;
   }
 
-  .toolbar { 
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: baseline;
-    column-gap: 16px;
-    margin: 8px;
-  }
-  
   .upload-holder {
     display:flex; 
     justify-content: center; 
@@ -149,10 +130,6 @@
     align-items: center;
   }
   
-  .warning {
-    background-color: var(--warning-color);
-  }
-
   @media (max-width: 768px) {
     .toolbar {
       flex-direction: column;
@@ -162,5 +139,4 @@
     }
   }
 
-  .error { color: #ff4a4a; }
 </style>

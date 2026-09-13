@@ -4,8 +4,8 @@ import { Bookmark } from "./bookmark.svelte";
 export class BookmarkData {
 
     bookmarkTree = $state(null);
-    bookmarkArray = null;
-    parentMap = null;
+    bookmarkArray = $state([]);
+    parentMap = new Map();
 
     static HTMLToTree(text) {
         const parsed = parseHTML(text);
@@ -30,28 +30,18 @@ export class BookmarkData {
         }
     }
 
-    constructor(tree = null) {
-        if (tree != null) {
-            this.load(tree);
-        }
-    }
+    constructor() {}
 
     loadHTML(text) {
         const tree = BookmarkData.HTMLToTree(text);
-        this.load(tree);
-    }
-
-    load(tree) {
         this.bookmarkTree = tree;
-        this.bookmarkArray = [];
-        this.parentMap = new Map();
         BookmarkData.deriveFromTree(this.bookmarkTree, this.bookmarkArray, this.parentMap);
     }
 
     clear() {
         this.bookmarkTree = null;
-        this.bookmarkArray = null;
-        this.parentMap = null;
+        this.bookmarkArray = [];
+        this.parentMap = new Map();
     }
 
     isLoaded() {
@@ -61,6 +51,11 @@ export class BookmarkData {
     getBookmarks() {
         if (!this.bookmarkTree) return null; 
         return this.bookmarkTree.children;
+    }
+
+    getBookmarkArray() {
+        if (!this.bookmarkTree) return null;
+        return this.bookmarkArray;
     }
 
     getParentOfNode(node) {
@@ -105,7 +100,7 @@ export class BookmarkData {
         const index = siblings.indexOf(node);
 
         siblings.splice(index, 1);
-        this.bookmarkArray[nodeId] = null;
+        this.bookmarkArray.splice(index, 1);
         this.parentMap.delete(nodeId);
     }
 

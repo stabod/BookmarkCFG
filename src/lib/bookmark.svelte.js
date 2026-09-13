@@ -133,6 +133,15 @@ export class Bookmark {
         return `<${this.tag}${attrString}>${escaped}</${this.tag}>`;
     }
 
+    toSearchString() {
+        let str = ""
+        str += this.text.toLowerCase() + " ";
+        if (!this.isFolder()) {
+            str += this.attributes.href.toLowerCase();
+        }
+        return str;
+    }
+
     // Visit every node once
     *walk() {
         const stack = [this];

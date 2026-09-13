@@ -4,6 +4,7 @@
     import Editor from './Editor.svelte';
     import Search from './Search.svelte';
     import Stats from './Stats.svelte';
+    import SaveLoad from './SaveLoad.svelte';
     let openTab = $state(0);
     const bookmarkData = getContext('bookmarkData');
 </script>
@@ -42,7 +43,7 @@
 
 {#snippet saveLoadTab()}
     <section class="pane">
-        TODO    
+        <SaveLoad/>
     </section>
 {/snippet}
 
@@ -64,7 +65,6 @@
 <style>
     .tab-button-holder {
         background-color: var(--surface-color);
-        border: 4px solid var(--border-color);
         display: flex;
         flex-direction: row;
         justify-content: space-evenly;
@@ -80,8 +80,9 @@
     }
     .workspace {
         display: flex;
-        flex-grow: 1;
+        flex: 1;
         flex-direction: row;
+        overflow-y: hidden;
     }
     .pane {
         flex: 1 1 0;
@@ -90,15 +91,12 @@
         border-radius: 0px;
         padding: 16px;
         min-width: 0;
-        overflow-y:scroll;
+        overflow-y: scroll;
     }
-    @media (max-width:784) {
+
+    @media (max-width: 768px) {
         .workspace {
             flex-direction: column;
-        }
-        .pane {
-            width: 80%;
-            height: 50vh;
         }
     }
 </style>

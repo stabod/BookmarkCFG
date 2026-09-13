@@ -53,3 +53,12 @@ input[type="number"] {
   box-sizing: border-box;
   border-style: inset;
 }
+
+.bookmark-icon {
+        height: 16px;
+        width: 16px;
+    }
+
+.warning {
+    background-color: var(--warning-color);
+  }
