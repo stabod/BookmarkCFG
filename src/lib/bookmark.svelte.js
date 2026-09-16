@@ -1,4 +1,5 @@
-import { HEADER_TAGS, ELEMENT_TAG, ALLOWED_TAGS, escapeHTML } from "./html-utills";
+import { DATE_ISO_STR_LIMIT, dateToSecTimestamp, timeNowSeconds, timestampToLocalDate } from "./datetimeUtils";
+import { HEADER_TAGS, ELEMENT_TAG, ALLOWED_TAGS, escapeHTML } from "./html-utils";
 
 class BookmarkFrame {
 
@@ -74,7 +75,7 @@ export class Bookmark {
     } 
 
     static newFolder() {
-      const timeNow = Math.floor(Date.now() / 1000);
+      const timeNow = timeNowSeconds();
         const attr = [
             { name: "add_date", value: timeNow },
             { name: "last_modified", value: timeNow }
@@ -120,6 +121,32 @@ export class Bookmark {
         return this.#tag;
     }
 
+    getLastModifiedLocalString() {
+        return timestampToLocalDate(this.attributes.last_modified).toDateString();
+    }
+
+    getAddDateLocalString() {
+        return timestampToLocalDate(this.attributes.add_date).toDateString();
+    }
+
+    getLastModifiedLocalISOString() {
+        const str = timestampToLocalDate(this.attributes.last_modified).toISOString();
+        return str.slice(0, DATE_ISO_STR_LIMIT);
+    }
+
+    getAddDateLocalISOString() {
+        const str = timestampToLocalDate(this.attributes.add_date).toISOString();
+        return str.slice(0, DATE_ISO_STR_LIMIT);
+    }
+
+    setLastModified(dateString) {
+        this.attributes.last_modified = dateToSecTimestamp(dateString);
+    }
+
+    setAddDate(dateString) {
+        this.attributes.add_date = dateToSecTimestamp(dateString);
+    }
+
     isFolder() {
         return this.children != null;
     }
@@ -137,8 +164,10 @@ export class Bookmark {
         let str = ""
         str += this.text.toLowerCase() + " ";
         if (!this.isFolder()) {
-            str += this.attributes.href.toLowerCase();
+            str += this.attributes.href.toLowerCase() + " ";
         }
+        str += this.getAddDateLocalString().toLowerCase() + " ";
+        str += this.getAddDateLocalString().toLowerCase() + " ";
         return str;
     }
 

@@ -1,4 +1,4 @@
-import { HEADER_TAGS } from "./html-utills.js";
+import { HEADER_TAGS } from "./html-utils.js";
 import { Bookmark } from "./bookmark.svelte.js";
 
 export class Selection {

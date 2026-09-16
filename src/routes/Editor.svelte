@@ -1,32 +1,9 @@
 <script>
     import { getContext } from 'svelte';
-    import { HEADER_TAGS } from '$lib/html-utills';
-
-    const DATETIME_LOCAL_STR_LENGHT = 19;
-    const MILLISECONDS = 1000;
-    const MINUTES_IN_MILLISECONDS = 60 * MILLISECONDS;
-
+    import { HEADER_TAGS } from '$lib/html-utils';
+    import { timestampToLocalDate, dateToSecTimestamp } from '$lib/datetimeUtils';
     const selection = getContext('selection');
-
-    function timestampToDate(timestamp) {
-        if (!timestamp) {
-            timestamp = '0';
-        }
-        const ms = Number(timestamp) * MILLISECONDS;
-        const date = new Date(ms);
-
-        const localMS = ms - (date.getTimezoneOffset() * MINUTES_IN_MILLISECONDS);
-        const localDate = new Date(localMS);
-        const str = localDate.toISOString();
-        return str.slice(0, DATETIME_LOCAL_STR_LENGHT); /* Ignores milliseconds and Z */
-    }
-
-    function dateToTimestamp(dateStr) {
-        const date = new Date(dateStr);
-        const sec = date.getTime() / MILLISECONDS;
-        const floored = Math.floor(sec);
-        return floored;
-    }
+    
 </script>
 
 {#snippet editFields()}
@@ -38,8 +15,8 @@
         <label class="label-text" for="bookmark-date-added-input-timestamp">Date Added Timestamp</label>
 
         <input id="bookmark-date-added-input" type="datetime-local" 
-                bind:value={() => timestampToDate(selection.selected.attributes.add_date),
-                            (v) => selection.selected.attributes.add_date = dateToTimestamp(v)}/>
+                bind:value={() => selection.selected.getAddDateLocalISOString(),
+                            (v) => selection.selected.setAddDate(v)}/>
         <input id="bookmark-date-added-input-timestamp" type="number" bind:value={selection.selected.attributes.add_date}/>
     </div>
 
@@ -48,8 +25,8 @@
         <label class="label-text" for="bookmark-last-modified-input-timestamp">Last Modified Timestamp</label>
 
         <input id="bookmark-last-modified-input" type="datetime-local" 
-                bind:value={() => timestampToDate(selection.selected.attributes.last_modified),
-                            (v) => selection.selected.attributes.last_modified = dateToTimestamp(v)}/>
+                bind:value={() => selection.selected.getLastModifiedLocalISOString(),
+                            (v) => selection.selected.setLastModified(v)}/>
         <input id="bookmark-last-modified-input-timestamp" type="number" bind:value={selection.selected.attributes.last_modified}/>
     </div> 
 

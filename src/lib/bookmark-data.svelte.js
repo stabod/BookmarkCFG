@@ -1,4 +1,4 @@
-import { parseHTML, HTMLToObject, HTML_HEADER, ELEMENT_TAG, OPEN_CONTAINER_TAG, CLOSE_CONTAINER_TAG  } from "$lib/html-utills.js"
+import { parseHTML, HTMLToObject, HTML_HEADER, ELEMENT_TAG, OPEN_CONTAINER_TAG, CLOSE_CONTAINER_TAG  } from "$lib/html-utils.js"
 import { Bookmark } from "./bookmark.svelte";
 
 export class BookmarkData {
