@@ -72,11 +72,13 @@
     }
     .tab-button {
         background-color: var(--accent-color-1);
-        border-radius: 0px;   
+        border-radius: 0px;
+        border-style: outset;
         width: 100%;
     }
     .tab-selected {
         background-color: var(--accent-color-4);
+        border-style: inset;
     }
     .workspace {
         display: flex;

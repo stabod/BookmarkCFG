@@ -33,6 +33,15 @@ input[type=file]::file-selector-button {
   cursor: pointer;
 }
 
+button:hover {
+  background-color: var(--accent-color-3);
+}
+
+button:active {
+  background-color: var(--accent-color-3);
+  border-style: inset;
+}
+
 .strech-button {
   width: 100%;
 }

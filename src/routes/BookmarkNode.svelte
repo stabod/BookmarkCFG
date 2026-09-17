@@ -73,7 +73,7 @@
         color: var(--text-color);
         padding: 4px 8px;
         border-radius: 6px;
-        border-style:outset;
+        border-style: outset;
         border-color: var(--border-color);
         cursor: pointer;
         font-size: 1em;
@@ -81,6 +81,7 @@
 
     .selected {
         background-color: var(--accent-color-4);
+        border-style: inset;
     }
 
     .fold-btn {

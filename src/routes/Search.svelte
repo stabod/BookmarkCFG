@@ -25,9 +25,7 @@
     </div>
 
     <p>Found: {found.length}</p>
-    <div class="search-results">
-          <BookmarkList nodes={found}/>  
-    </div>
+    <BookmarkList nodes={found}/>  
 </div>
 
 <style> 
@@ -43,12 +41,5 @@
         display: flex;
         justify-content: space-between;
         align-items: baseline;
-    }
-    
-    .search-results {
-        border: 4px solid var(--border-color);
-        padding: 4px;
-        border-style: outset;
-        overflow-y: scroll;
     }
 </style>

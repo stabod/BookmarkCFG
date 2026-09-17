@@ -1,65 +1,136 @@
 <script>
+    import { SvelteSet } from "svelte/reactivity";
     import bookmarkIcon from "$lib/assets/star.png";
     import folderIcon from "$lib/assets/folder.png";
     let { nodes } = $props();
 
-    function limitText(text) {
-        if (text.length > 99) {
-            return text.slice(0, 99) + "..."
-        } else {
-            return text + " ".repeat(100 - text.length);
-        }
+    const NAME_ID = "name"
+    const URL_ID = "href"
+    const ADD_DATE_ID = "add_date"
+    const LAST_MODIFIED_ID = "last_modified"
+    const showRows = new SvelteSet([NAME_ID, URL_ID, ADD_DATE_ID, LAST_MODIFIED_ID]);
+
+    function toggleVisibility(id) {
+        showRows.has(id) ? showRows.delete(id) : showRows.add(id);
     }
 </script>
 
 {#snippet nodeRow(node)}
     <tr class="node-holder">
-    {#if node.isFolder()}
-        <td>
-            <img alt='' src={folderIcon} class="bookmark-icon"/>
-            {node.text}
-        </td>
-    {/if}
-    {#if !node.isFolder()}
-        <td>
-            <img alt='' src={node.attributes.icon ? node.attributes.icon : bookmarkIcon} class="bookmark-icon"/>
-            <a href={node.attributes.href} title={node.attributes.href}>{node.text}</a>
-        </td>
-    {/if}
-        <td>
-            {node.attributes.add_date}
-        </td>
-        <td>
-            {node.attributes.last_modified}
-        </td>
+        {#if showRows.has(NAME_ID)} 
+            <td>
+                {#if node.isFolder()}
+                    <img class="bookmark-icon" alt='' src={folderIcon}/>
+                {:else}
+                    <img class="bookmark-icon" alt='' src={node.attributes.icon ? node.attributes.icon : bookmarkIcon}/>
+                {/if}
+                {node.text}
+            </td>
+        {/if}
+        {#if showRows.has(URL_ID)} 
+            <td>
+                {#if node.isFolder()}
+                    N/A
+                {:else}
+                    <a href={node.attributes.href}>{node.attributes.href}</a>
+                {/if}
+            </td>
+        {/if}
+        {#if showRows.has(ADD_DATE_ID)}
+            <td>
+                {node.getAddDateLocalString()}
+            </td>
+        {/if}
+        {#if showRows.has(LAST_MODIFIED_ID)}
+            <td>
+                {node.getLastModifiedLocalString()}
+            </td>
+        {/if}
     </tr>
 {/snippet}
 
-<table>
-    <thead>
-        <tr>
-            <th>Name</th>
-            <th>Add Date</th>
-            <th>Last Modified</th>
-        </tr>
-    </thead>
-    <tbody>
-        {#each nodes as node}
-            {@render nodeRow(node)}
-        {/each}
-    </tbody>
-</table>
+<div class="visibility-buttons-holder">
+    <button class={["visibility-button", showRows.has(NAME_ID) && "visible-row"]} 
+            onclick={() => toggleVisibility(NAME_ID)}>
+            {showRows.has(NAME_ID) ? "Hide Name" : "Show Name"}
+    </button>
+
+    <button class={["visibility-button", showRows.has(URL_ID) && "visible-row"]} 
+            onclick={() => toggleVisibility(URL_ID)}>
+            {showRows.has(URL_ID) ? "Hide URL" : "Show URL"}
+    </button>
+
+    <button class={["visibility-button", showRows.has(ADD_DATE_ID) && "visible-row"]} 
+            onclick={() => toggleVisibility(ADD_DATE_ID)}>
+            {showRows.has(ADD_DATE_ID) ? "Hide Add Date" : "Show Add Date"}
+    </button>
+
+    <button class={["visibility-button", showRows.has(LAST_MODIFIED_ID) && "visible-row"]} 
+            onclick={() => toggleVisibility(LAST_MODIFIED_ID)}>
+            {showRows.has(LAST_MODIFIED_ID) ? "Hide Last Modified" : "Show Last Modified"}
+    </button>
+</div>
+
+<div class="table-holder">
+    {#if showRows.size == 0}
+        <p>Show at least one category!</p>
+    {/if}
+    <table>
+        <thead>
+            <tr>
+                {#if showRows.has(NAME_ID)}<th>Name</th>{/if}
+                {#if showRows.has(URL_ID)}<th>URL</th>{/if}
+                {#if showRows.has(ADD_DATE_ID)}<th>Add Date</th>{/if}
+                {#if showRows.has(LAST_MODIFIED_ID)}<th>Last Modified</th>{/if}
+            </tr>
+        </thead>
+        <tbody>
+            {#each nodes as node}
+                {@render nodeRow(node)}
+            {/each}
+        </tbody>
+    </table>
+</div>
+
 
 <style>
+    .table-holder {
+        border: 4px solid var(--border-color);
+        padding: 4px;
+        border-style: outset;
+        overflow-y: scroll;
+    }
+
     .node-holder {
         color: var(--text-color);
-        background-color: var(--accent-color-2);
+        background-color: var(--accent-color-1);
         border: 4px solid var(--border-color);
         border-width: 2px;
         border-radius: 0;
         border-style: outset;
         padding: 4px;
         margin: 4px
+    }
+
+    .visibility-buttons-holder {
+        display: flex;
+        flex-direction: row;
+        width: 100%;
+        justify-content: space-evenly;
+        align-items: baseline;
+        margin: 4px;
+    }
+
+    .visibility-button {
+        width: 100%;
+        background-color: var(--accent-color-1);
+        border: 4px solid var(--border-color);
+        border-style: outset;
+    }
+
+    .visible-row {
+        background-color: var(--accent-color-4);
+        border-style: inset;
     }
 
     table {
@@ -69,7 +140,7 @@
     }
 
     thead {
-        background-color: var(--accent-color-4);
+        background-color: var(--accent-color-3);
         position: sticky;
         top: 0;
     }
