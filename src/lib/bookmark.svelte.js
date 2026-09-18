@@ -1,5 +1,10 @@
-import { DATE_ISO_STR_LIMIT, dateToSecTimestamp, timeNowSeconds, timestampToLocalDate } from "./datetimeUtils";
+import { DATE_ISO_STR_LIMIT, dateToSecTimestamp, timeNowSeconds, timestampToLocalDate } from "./datetime-utils";
 import { HEADER_TAGS, ELEMENT_TAG, ALLOWED_TAGS, escapeHTML } from "./html-utils";
+
+export const NAME_ID = "name"
+export const URL_ID = "href"
+export const ADD_DATE_ID = "add_date"
+export const LAST_MODIFIED_ID = "last_modified"
 
 class BookmarkFrame {
 
@@ -30,6 +35,7 @@ class BookmarkFrame {
 }
 
 export class Bookmark {
+
     static #nextID = 1;
     #id
     #tag = $state("");
@@ -59,7 +65,7 @@ export class Bookmark {
     }
 
     static newBookmark() {
-        const timeNow = Math.floor(Date.now() / 1000);
+        const timeNow = timeNowSeconds();
         const attr = [
             { name: "href", value: "https://www.example.com/"},
             { name: "add_date", value: timeNow },
@@ -160,14 +166,20 @@ export class Bookmark {
         return `<${this.tag}${attrString}>${escaped}</${this.tag}>`;
     }
 
-    toSearchString() {
-        let str = ""
-        str += this.text.toLowerCase() + " ";
-        if (!this.isFolder()) {
+    toSearchString(filterSet) {
+        let str = "";
+        if (filterSet.has(NAME_ID)) { 
+            str += this.text.toLowerCase() + " "; 
+        }
+        if (filterSet.has(URL_ID) && !this.isFolder()) {
             str += this.attributes.href.toLowerCase() + " ";
         }
-        str += this.getAddDateLocalString().toLowerCase() + " ";
-        str += this.getAddDateLocalString().toLowerCase() + " ";
+        if (filterSet.has(ADD_DATE_ID)) {
+            str += this.getAddDateLocalString().toLowerCase() + " ";
+        }
+        if (filterSet.has(LAST_MODIFIED_ID)) {
+            str += this.getLastModifiedLocalString().toLowerCase() + " ";
+        }
         return str;
     }
 

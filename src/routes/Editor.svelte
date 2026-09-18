@@ -1,7 +1,7 @@
 <script>
     import { getContext } from 'svelte';
     import { HEADER_TAGS } from '$lib/html-utils';
-    import { timestampToLocalDate, dateToSecTimestamp } from '$lib/datetimeUtils';
+    import { timestampToLocalDate, dateToSecTimestamp } from '$lib/datetime-utils.js';
     const selection = getContext('selection');
     
 </script>

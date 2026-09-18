@@ -2,12 +2,9 @@
     import { SvelteSet } from "svelte/reactivity";
     import bookmarkIcon from "$lib/assets/star.png";
     import folderIcon from "$lib/assets/folder.png";
+    import { NAME_ID, URL_ID, ADD_DATE_ID, LAST_MODIFIED_ID } from "$lib/bookmark.svelte";
     let { nodes } = $props();
-
-    const NAME_ID = "name"
-    const URL_ID = "href"
-    const ADD_DATE_ID = "add_date"
-    const LAST_MODIFIED_ID = "last_modified"
+    
     const showRows = new SvelteSet([NAME_ID, URL_ID, ADD_DATE_ID, LAST_MODIFIED_ID]);
 
     function toggleVisibility(id) {
@@ -73,7 +70,7 @@
 
 <div class="table-holder">
     {#if showRows.size == 0}
-        <p>Show at least one category!</p>
+        <p>All categories hidden</p>
     {/if}
     <table>
         <thead>
@@ -115,8 +112,7 @@
     .visibility-buttons-holder {
         display: flex;
         flex-direction: row;
-        width: 100%;
-        justify-content: space-evenly;
+        justify-content: space-between;
         align-items: baseline;
         margin: 4px;
     }
