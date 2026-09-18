@@ -1,7 +1,7 @@
 <script>
     import { getContext } from "svelte";
     import { SvelteSet } from "svelte/reactivity";
-    import BookmarkList from "./BookmarkList.svelte";
+    import BookmarkList from "$lib/components/BookmarkList.svelte";
     import { NAME_ID, URL_ID, ADD_DATE_ID, LAST_MODIFIED_ID } from "$lib/bookmark.svelte";
 
     const fieldFilters = new SvelteSet([NAME_ID, URL_ID, ADD_DATE_ID, LAST_MODIFIED_ID]);

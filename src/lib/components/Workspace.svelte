@@ -1,10 +1,10 @@
 <script>
     import { getContext } from 'svelte';
-    import BookmarkNode from './BookmarkNode.svelte';
-    import Editor from './Editor.svelte';
-    import Search from './Search.svelte';
-    import Stats from './Stats.svelte';
-    import SaveLoad from './SaveLoad.svelte';
+    import BookmarkNode from '$lib/components/BookmarkNode.svelte';
+    import Editor from '$lib/components/workspaces/Editor.svelte';
+    import Search from '$lib/components/workspaces/Search.svelte';
+    import Stats from '$lib/components/workspaces/Stats.svelte';
+    import SaveLoad from '$lib/components/workspaces/SaveLoad.svelte';
     let openTab = $state(0);
     const bookmarkData = getContext('bookmarkData');
 </script>

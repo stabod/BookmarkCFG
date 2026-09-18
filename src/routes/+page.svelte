@@ -2,8 +2,8 @@
   import { setContext } from 'svelte';
   import { browser } from '$app/environment';
   import { SvelteSet } from 'svelte/reactivity';
-  import Workspace from './Workspace.svelte';
-  import HelpPopup from './HelpPopup.svelte';
+  import Workspace from '$lib/components/Workspace.svelte';
+  import HelpPopup from '$lib/components/HelpPopup.svelte';
   import { BookmarkData } from '$lib/bookmark-data.svelte.js'; 
   import { Selection } from '$lib/selection.svelte.js';
 

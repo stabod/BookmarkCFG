@@ -1,8 +1,8 @@
 <script>
     import { getContext } from "svelte";
     import { BookmarkStats } from "$lib/bookmark-stats.svelte.js";
-    import BookmarkListNode from "./BookmarkList.svelte";
-    import BookmarkList from "./BookmarkList.svelte";
+    import BookmarkListNode from "$lib/components/BookmarkList.svelte";
+    import BookmarkList from "$lib/components/BookmarkList.svelte";
 
     const data = getContext('bookmarkData');
     const stats = new BookmarkStats(data);
