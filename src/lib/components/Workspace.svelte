@@ -5,61 +5,34 @@
     import Search from '$lib/components/workspaces/Search.svelte';
     import Stats from '$lib/components/workspaces/Stats.svelte';
     import SaveLoad from '$lib/components/workspaces/SaveLoad.svelte';
-    let openTab = $state(0);
+
+    const EDITOR_TAB_ID = 0;
+    const SEARCH_TAB_ID = 1;
+    const STATS_TAB_ID = 2;
+    const SAVELOAD_TAB_ID = 3;
+
+    let openTab = $state(EDITOR_TAB_ID);
     const bookmarkData = getContext('bookmarkData');
 </script>
 
-{#snippet tabButtons()}
-    <button class={['tab-button', openTab===0 && "tab-selected" ]} onclick={() => openTab=0}>Editor</button>
-    <button class={['tab-button', openTab===1 && "tab-selected" ]} onclick={() => openTab=1}>Search</button>
-    <button class={['tab-button', openTab===2 && "tab-selected" ]} onclick={() => openTab=2}>Stats</button>
-    <button class={['tab-button', openTab===3 && "tab-selected" ]} onclick={() => openTab=3}>Save/Load</button>
-{/snippet}
-
-{#snippet editorTab()}
-    <section class="pane">
-        <h2>Bookmark Tree</h2>
-        {#each bookmarkData.getBookmarks() as child}
-            <BookmarkNode node={child} />
-        {/each}
-    </section>
-    <section class="pane">
-        <h2>Editor</h2>
-        <Editor/>
-    </section>
-{/snippet}
-
-{#snippet searchTab()}
-    <section class="pane">
-        <Search/>
-    </section>
-{/snippet}
-
-{#snippet statTab()}    
-    <section class="pane">
-       <Stats/> 
-    </section>
-{/snippet}
-
-{#snippet saveLoadTab()}
-    <section class="pane">
-        <SaveLoad/>
-    </section>
-{/snippet}
-
 <div class="tab-button-holder">
-    {@render tabButtons()}
+    <button class={['tab-button', openTab==EDITOR_TAB_ID && "tab-selected" ]} onclick={() => openTab=0}>Editor</button>
+    <button class={['tab-button', openTab==SEARCH_TAB_ID && "tab-selected" ]} onclick={() => openTab=1}>Search</button>
+    <button class={['tab-button', openTab==STATS_TAB_ID && "tab-selected" ]} onclick={() => openTab=2}>Stats</button>
+    <button class={['tab-button', openTab==SAVELOAD_TAB_ID && "tab-selected" ]} onclick={() => openTab=3}>Save/Load</button>
 </div>
 <div class="workspace">
-    {#if openTab === 0} 
-        {@render editorTab()}
-    {:else if openTab === 1}
-        {@render searchTab()}
-    {:else if openTab === 2}
-        {@render statTab()}
-    {:else if openTab === 3}
-        {@render saveLoadTab()}
-    {/if}
+    <section class="pane">
+        {#if openTab == EDITOR_TAB_ID} 
+            <Editor/>
+        {:else if openTab == SEARCH_TAB_ID}
+            <Search/>
+        {:else if openTab == STATS_TAB_ID}
+            <Stats/>
+        {:else if openTab == SAVELOAD_TAB_ID}
+            <SaveLoad/> 
+        {/if}
+    </section>
 </div>
 
 <style>

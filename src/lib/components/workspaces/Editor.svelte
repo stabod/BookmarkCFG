@@ -1,7 +1,9 @@
 <script>
     import { getContext } from 'svelte';
-    import { HEADER_TAGS } from '$lib/html-utils';
     import { timestampToLocalDate, dateToSecTimestamp } from '$lib/datetime-utils.js';
+    import BookmarkNode from '$lib/components/BookmarkNode.svelte';
+
+    const data = getContext('bookmarkData');
     const selection = getContext('selection');
     
 </script>
@@ -30,35 +32,60 @@
         <input id="bookmark-last-modified-input-timestamp" type="number" bind:value={selection.selected.attributes.last_modified}/>
     </div> 
 
-    
-
     <label class="label-text" for="bookmark-URL-input">URL</label>
     <input id="bookmark-URL-input" type="text" bind:value={selection.selected.attributes.href} 
-            disabled={selection.selected.tag === "H3" ? true : false}/>
+            disabled={selection.selected.isFolder()}/>
 {/snippet}
 
 {#snippet modifyButtons()}
     <button onclick={() => selection.moveUp()}>Move Up</button> 
     <button onclick={() => selection.moveDown()}>Move Down</button>
     <button onclick={() => selection.clear()}>Unselect</button>
-    {#if HEADER_TAGS.has(selection.selected.tag)}
+    {#if selection.selected.isFolder()}
         <button onclick={() => selection.newBookmark()}>New</button>
         <button onclick={() => selection.newFolder()}>New Folder</button>
     {/if}
 {/snippet}
 
-{#if selection.selected == null}
-    <p class="no-selection">No selection</p>
-{:else}
-    <div class="field-holder">
-        {@render editFields()}
+
+<div class="editor">
+    <div class="tree-holder">
+        {#each data.getBookmarks() as node}
+            <BookmarkNode node={node}/>
+            <br>
+        {/each}
     </div>
-    <div class="button-holder">
-        {@render modifyButtons()}
+    <div class="controls-holder">
+        {#if selection.selected == null}
+            <p class="no-selection">No selection</p>
+        {:else}
+            <div class="field-holder">
+                {@render editFields()}
+            </div>
+            <div class="button-holder">
+                {@render modifyButtons()}
+            </div>
+        {/if}
     </div>
-{/if}
+</div>
 
 <style>
+    .editor {
+        height: 100%;
+        display: flex;
+        flex-direction: row;
+    }
+
+    .tree-holder {
+        width: 50%;
+        overflow-y: scroll;
+    }
+
+    .controls-holder {
+        width: 50%;
+        overflow-y: hidden;
+    }
+
     .field-holder {
         display: flex;
         flex-direction: column;
