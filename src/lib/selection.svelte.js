@@ -1,64 +1,116 @@
-import { HEADER_TAGS } from "./html-utils.js";
+import { SvelteSet } from "svelte/reactivity";
 import { Bookmark } from "./bookmark.svelte.js";
 
 export class Selection {
 
-    selected = $state(null);
-    selectedElement = null;
-    data = null;
+    #selected = new SvelteSet();
+    #multiSelectMode = $state(false);
+    #data = null;
 
     constructor(data) {
-        this.data = data;
+        this.#data = data;
     }
 
-    select(node) {
-        this.selected = node;
+    toggleMultiSelect() {
+        this.#multiSelectMode = !this.#multiSelectMode;
+        return this.#multiSelectMode;
     }
 
-    clear() {
-        this.selected = null;
+    hasSelection() {
+        return (this.#data != null || this.#selected.size > 0);
+    }
+
+    isMultiSelectMode() {
+        return this.#multiSelectMode;
     }
 
     isSelected(node) {
-        return this.selected === node;
+        return this.#selected.has(node);
     }
 
+    #mutliSelect(node) {
+        if (this.#selected.has(node)) {
+            this.#selected.delete(node)
+        } else {
+            this.#selected.add(node);
+        }
+    }
+
+    selectAdd(node) {
+        this.#selected.add(node);
+    }
+
+    select(node) {
+        if (this.#multiSelectMode) {
+            this.#mutliSelect(node); 
+        } else {
+            this.#selected.clear();
+            this.#selected.add(node);
+        }
+    }
+
+    getSingle() {
+        if (!this.hasSelection() || this.#selected.size > 1) {
+            return null;
+        }
+        return this.#selected.values().next().value; // I hate this. 
+    }
+
+    clear() {
+        this.#selected.clear();
+    }    
+
     moveUp() {
-        if (this.selected == null || this.data == null) return;
-        
-        const siblings = this.data.getSiblingsOfNode(this.selected);
-        if (siblings.length == 1) return;
+        if (!this.hasSelection()) return;
+        for (const el of this.#selected) {
+            const siblings = this.#data.getSiblingsOfNode(el);
+            if (siblings.length == 1) continue;
 
-        const index = siblings.indexOf(this.selected);
-        if (index == 0) return;
+            const index = siblings.indexOf(el);
+            if (index == 0) continue;
 
-        this.data.swap(siblings[index], siblings[index-1]);
+            this.#data.swap(siblings[index], siblings[index-1]);
+        }
     }
 
     moveDown() {
-        if (this.selected == null || this.data == null) return;
+        if (!this.hasSelection()) return;
         
-        const siblings = this.data.getSiblingsOfNode(this.selected);
-        if (siblings.length == 1) return;
+        for (const el of this.#selected) {
+            const siblings = this.#data.getSiblingsOfNode(el);
+            if (siblings.length == 1) continue;
 
-        const index = siblings.indexOf(this.selected);
-        if (index == (siblings.length - 1)) return;
+            const index = siblings.indexOf(el);
+            if (index == (siblings.length - 1)) continue;
 
-        this.data.swap(siblings[index], siblings[index+1]);
+            this.#data.swap(siblings[index], siblings[index+1]);
+        }
     }
 
     newBookmark() {
-        if (this.selected == null || this.data == null) return;
-        if (!this.selected.isFolder()) return;
-        this.data.addNode(this.selected, false); 
+        if (!this.hasSelection()) return;
+
+        for (const el of this.#selected) {
+            if (!el.isFolder()) continue;
+            this.#data.addNode(el, false); 
+        }
     }
 
     newFolder() {
-        if (this.selected == null || this.data == null) return;
-        if(!this.selected.isFolder()) return;
-        this.data.addNode(this.selected, true);
+        if (!this.hasSelection()) return;
+
+        for (const el of this.#selected) {
+            if(!el.isFolder()) continue;
+            this.#data.addNode(el, true);
+        }
     }
 
+    touch() {
+        if (!this.hasSelection()) return;
 
+        for (const el of this.#selected) {
+            el.touch();
+        }
+    }
 
 }

@@ -16,6 +16,14 @@
             foldContext.add(node);
         }
     }
+
+    function clickOnNode(event) {
+        if (event.shiftKey || selection.isMultiSelectMode()) {
+            selection.selectAdd(node);
+        } else {
+            selection.select(node);
+        }
+    }
 </script>
 
 {#snippet recursive(parent)}
@@ -32,7 +40,7 @@
 
 <div draggable="true">
     <button class={selection.isSelected(node) ? "bookmark-btn selected" : "bookmark-btn"}
-            onclick={() => selection.select(node)}>
+            onclick={(event) => clickOnNode(event)}>
         {#if node.isFolder()}
             <img alt='' src={folderIcon} class="bookmark-icon"/>
         {/if}

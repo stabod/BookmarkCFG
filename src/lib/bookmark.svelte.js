@@ -157,6 +157,10 @@ export class Bookmark {
         return this.children != null;
     }
 
+    touch() {
+        this.attributes.last_modified = timeNowSeconds();
+    }
+
     toHTMLString() {
         let attrString = "";
         for (const [key, value] of Object.entries(this.attributes)) {
@@ -183,7 +187,7 @@ export class Bookmark {
         return str;
     }
 
-    // Visit every node once
+    // Visit every node once - DFS
     *walk() {
         const stack = [this];
         while(stack.length > 0) {
