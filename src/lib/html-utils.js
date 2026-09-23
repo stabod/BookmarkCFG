@@ -63,7 +63,7 @@ export function HTMLToObject(element) {
       if (sibling && sibling.tagName === "DL") {
         parentMap.set(sibling, newobj.children);
       } else {
-        throw "Invalid file format";
+        throw new Error("Invalid file format");
       }
     }
     current = walker.nextNode();

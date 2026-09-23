@@ -6,6 +6,11 @@ export const URL_ID = "href"
 export const ADD_DATE_ID = "add_date"
 export const LAST_MODIFIED_ID = "last_modified"
 
+const baseAttr = { 
+    add_date: 0, 
+    last_modified: 0
+}
+
 class BookmarkFrame {
 
     node = null;
@@ -44,17 +49,22 @@ export class Bookmark {
     children = $state(null);
 
     static parseAttributes(element) {
-        const attrObj = {};
-        const baseAttr = [
-            { name: "add_date", value: 0 },
-            { name: "last_modified", value: 0 }
-        ];
+        const attrObj = structuredClone(baseAttr);
         for (const attr of element.attributes) {
-                attrObj[attr.name] = attr.value;
-            }
-        for (const attr of baseAttr) {
-            if (!attrObj[attr.name]) {
-                attrObj[attr.name] = attr.value;
+            const { name, value } = attr;
+            switch(name) {
+                case "add_date":
+                    attrObj.add_date = Number(value);
+                    break;
+                case "last_modified":
+                    attrObj.last_modified = Number(value);
+                    break;
+                case "href":
+                    attrObj.href = value;
+                    break;
+                case "icon":
+                    attrObj.icon = value;
+                    break;
             }
         }
         return attrObj;
@@ -115,7 +125,7 @@ export class Bookmark {
 
         this.#tag = element.tagName;
         this.attributes = Bookmark.parseAttributes(element);
-        this.text = element.textContent.trim();
+        this.text = element.textContent;
         this.children = HEADER_TAGS.has(element.tagName) ? [] : null;
     }
 
@@ -161,13 +171,23 @@ export class Bookmark {
         this.attributes.last_modified = timeNowSeconds();
     }
 
-    toHTMLString() {
+    toHTML() {
         let attrString = "";
         for (const [key, value] of Object.entries(this.attributes)) {
             attrString += ` ${key.toUpperCase()}="${value}"`;
         }
         const escaped = escapeHTML(this.text);
         return `<${this.tag}${attrString}>${escaped}</${this.tag}>`;
+    }
+
+    toJSON() {
+        return {
+            id: this.#id,
+            tag: this.#tag,
+            attributes: this.attributes,
+            text: this.text,
+            children: this.children 
+        }   
     }
 
     toSearchString(filterSet) {
