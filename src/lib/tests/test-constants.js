@@ -33,7 +33,7 @@ export const exampleInvalidHTML = '<!DOCTYPE NETSCAPE-Bookmark-file-1>\
         <DT><H3 ADD_DATE="1787572109" LAST_MODIFIED="1787572387">TestFolder</H3>\
     </DL><p>\
 </DL><p>\
-'
+';
 
 export const exampleCorrectObject = {
     id: 1,
@@ -44,7 +44,7 @@ export const exampleCorrectObject = {
         {
             id: 2,
             tag: "H3",
-            attributes: { add_date: 1787572080, last_modified: 1788152311 },
+            attributes: { add_date: 1787572080, last_modified: 1788152311, personal_toolbar_folder: "true"},
             text: "Bookmarks bar",
             children: [
                 {
@@ -79,17 +79,35 @@ export const exampleCorrectObject = {
             ]
         }
     ]
-}
+};
+
+export const exampleCorrectArray = [
+    exampleCorrectObject,
+    exampleCorrectObject.children[0],
+    exampleCorrectObject.children[0].children[0],
+    exampleCorrectObject.children[0].children[1],
+    exampleCorrectObject.children[0].children[2],
+    exampleCorrectObject.children[0].children[2].children[0]
+];
+
+export const exampleCorrectParentMap = new Map([
+    [exampleCorrectObject.id, null],
+    [exampleCorrectObject.children[0].id, exampleCorrectObject],
+    [exampleCorrectObject.children[0].children[0].id, exampleCorrectObject.children[0]],
+    [exampleCorrectObject.children[0].children[1].id, exampleCorrectObject.children[0]],
+    [exampleCorrectObject.children[0].children[2].id, exampleCorrectObject.children[0]],
+    [exampleCorrectObject.children[0].children[2].children[0].id, exampleCorrectObject.children[0].children[2]],
+]);
 
 export const exampleInputAttributes = {
     attributes: [
         { name: "href", value: "https://example.com"},
         { name: "add_date", value: "1787572080"},
     ]
-}
+};
 
 export const correctlyParsedAttributes = {
         href: "https://example.com", 
         add_date: 1787572080, 
         last_modified: 0
-}
+};

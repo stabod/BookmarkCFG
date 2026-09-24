@@ -42,8 +42,8 @@ class BookmarkFrame {
 export class Bookmark {
 
     static #nextID = 1;
-    #id
-    #tag = $state("");
+    id;
+    tag = $state("");
     attributes = $state(null);
     text = $state("");
     children = $state(null);
@@ -54,16 +54,11 @@ export class Bookmark {
             const { name, value } = attr;
             switch(name) {
                 case "add_date":
-                    attrObj.add_date = Number(value);
-                    break;
                 case "last_modified":
-                    attrObj.last_modified = Number(value);
+                    attrObj[name] = Number(value);
                     break;
-                case "href":
-                    attrObj.href = value;
-                    break;
-                case "icon":
-                    attrObj.icon = value;
+                default:
+                    attrObj[name] = value;
                     break;
             }
         }
@@ -77,9 +72,9 @@ export class Bookmark {
     static newBookmark() {
         const timeNow = timeNowSeconds();
         const attr = [
-            { name: "href", value: "https://www.example.com/"},
             { name: "add_date", value: timeNow },
-            { name: "last_modified", value: timeNow }
+            { name: "last_modified", value: timeNow },
+            { name: "href", value: "https://www.example.com/"}
         ];
         const obj = {
             tagName: "A",
@@ -117,24 +112,16 @@ export class Bookmark {
 
     constructor(element, noID) {
         if (noID) {
-            this.#id = 0;
+            this.id = 0;
         } else {
-            this.#id = Bookmark.#nextID;
+            this.id = Bookmark.#nextID;
             Bookmark.#nextID++;
         }
 
-        this.#tag = element.tagName;
+        this.tag = element.tagName;
         this.attributes = Bookmark.parseAttributes(element);
         this.text = element.textContent;
         this.children = HEADER_TAGS.has(element.tagName) ? [] : null;
-    }
-
-    get id() {
-        return this.#id;
-    }
-
-    get tag() {
-        return this.#tag;
     }
 
     getLastModifiedLocalString() {
@@ -174,6 +161,9 @@ export class Bookmark {
     toHTML() {
         let attrString = "";
         for (const [key, value] of Object.entries(this.attributes)) {
+            if (!value) {
+                continue;
+            }
             attrString += ` ${key.toUpperCase()}="${value}"`;
         }
         const escaped = escapeHTML(this.text);
@@ -182,8 +172,8 @@ export class Bookmark {
 
     toJSON() {
         return {
-            id: this.#id,
-            tag: this.#tag,
+            id: this.id,
+            tag: this.tag,
             attributes: this.attributes,
             text: this.text,
             children: this.children 

@@ -112,8 +112,8 @@ export class BookmarkData {
 
             if (el.visited != true) {
                 if (el.depth > 0) { string += ELEMENT_TAG; }
-                string += indent + el.node.toHTMLString() + '\n';
-                if (el.visited === false) { string += indet + OPEN_CONTAINER_TAG; }
+                string += el.node.toHTML() + '\n';
+                if (el.visited == false) { string += indent + OPEN_CONTAINER_TAG; }
             } else {
                 string += indent + CLOSE_CONTAINER_TAG;
             }
