@@ -97,10 +97,11 @@ export class BookmarkData {
         const parent = this.parentMap.get(nodeId);
         if (!parent) return;
         const siblings = parent.children;
-        const index = siblings.indexOf(node);
+        const siblingIndex = siblings.indexOf(node);
+        const arrayIndex = this.bookmarkArray.indexOf(node);
 
-        siblings.splice(index, 1);
-        this.bookmarkArray.splice(index, 1);
+        siblings.splice(siblingIndex, 1);
+        this.bookmarkArray.splice(arrayIndex, 1);
         this.parentMap.delete(nodeId);
     }
 

@@ -11,87 +11,89 @@
 <div class="editor">
     <div class="tree-holder">
         {#each data.getBookmarks() as node}
-            <BookmarkNode {node} />
-            <br />
+            <BookmarkNode {node}/>
+            <br/>
         {/each}
     </div>
     <div class="controls-holder">
-        {#if !singleSelection}
-            <p class="no-selection">No selection</p>
-        {:else}
-            <div class="field-holder">
-                <label class="label-text" for="bookmark-text-input">Text</label>
+        <div class={["field-holder", "blurred" && !singleSelection]}>
+            <label class="label-text" for="bookmark-text-input">Text</label>
+            <input
+                id="bookmark-text-input"
+                type="text"
+                bind:value={singleSelection.text}/>
+
+            <div class="date-holder">
+                <label class="label-text" for="bookmark-date-added-input"
+                    >Date Added</label>
+                <label
+                    class="label-text"
+                    for="bookmark-date-added-input-timestamp"
+                    >Date Added Timestamp</label>
+
                 <input
-                    id="bookmark-text-input"
-                    type="text"
-                    bind:value={singleSelection.text}
+                    id="bookmark-date-added-input"
+                    type="datetime-local"
+                    bind:value={
+                        () => singleSelection?.getAddDateLocalISOString(),
+                        (v) => singleSelection?.setAddDate(v)
+                    }
                 />
-
-                <div class="date-holder">
-                    <label class="label-text" for="bookmark-date-added-input"
-                        >Date Added</label>
-                    <label
-                        class="label-text"
-                        for="bookmark-date-added-input-timestamp"
-                        >Date Added Timestamp</label>
-
-                    <input
-                        id="bookmark-date-added-input"
-                        type="datetime-local"
-                        bind:value={
-                            () => singleSelection?.getAddDateLocalISOString(),
-                            (v) => singleSelection?.setAddDate(v)
-                        }
-                    />
-                    <input
-                        id="bookmark-date-added-input-timestamp"
-                        type="number"
-                        bind:value={singleSelection.attributes.add_date}
-                    />
-                </div>
-
-                <div class="date-holder">
-                    <label class="label-text" for="bookmark-last-modified-input"
-                        >Last Modified</label>
-                    <label
-                        class="label-text"
-                        for="bookmark-last-modified-input-timestamp"
-                        >Last Modified Timestamp</label>
-
-                    <input
-                        id="bookmark-last-modified-input"
-                        type="datetime-local"
-                        bind:value={
-                            () =>
-                                singleSelection?.getLastModifiedLocalISOString(),
-                            (v) => singleSelection?.setLastModified(v)
-                        }
-                    />
-                    <input
-                        id="bookmark-last-modified-input-timestamp"
-                        type="number"
-                        bind:value={singleSelection.attributes.last_modified}
-                    />
-                </div>
-
-                <label class="label-text" for="bookmark-URL-input">URL</label>
                 <input
-                    id="bookmark-URL-input"
-                    type="text"
-                    bind:value={singleSelection.attributes.href}
-                    disabled={singleSelection?.isFolder()}
+                    id="bookmark-date-added-input-timestamp"
+                    type="number"
+                    bind:value={singleSelection.attributes.add_date}
                 />
             </div>
-        {/if}
-            <div class="button-holder">
-                <button onclick={() => selection.moveUp()}>Move Up</button>
-                <button onclick={() => selection.moveDown()}>Move Down</button>
-                <button onclick={() => selection.touch()}>Touch</button>
-                <button onclick={() => selection.clear()}>Unselect</button>
-                {#if singleSelection?.isFolder()}
-                    <button onclick={() => selection.newBookmark()}>New</button>
-                    <button onclick={() => selection.newFolder()}>New Folder</button>
-                {/if}
+
+            <div class="date-holder">
+                <label class="label-text" for="bookmark-last-modified-input"
+                    >Last Modified</label>
+                <label
+                    class="label-text"
+                    for="bookmark-last-modified-input-timestamp"
+                    >Last Modified Timestamp</label>
+
+                <input
+                    id="bookmark-last-modified-input"
+                    type="datetime-local"
+                    bind:value={
+                        () =>
+                            singleSelection?.getLastModifiedLocalISOString(),
+                        (v) => singleSelection?.setLastModified(v)
+                    }
+                />
+                <input
+                    id="bookmark-last-modified-input-timestamp"
+                    type="number"
+                    bind:value={singleSelection.attributes.last_modified}
+                />
+            </div>
+
+            <label class="label-text" for="bookmark-URL-input">URL</label>
+            <input
+                id="bookmark-URL-input"
+                type="text"
+                bind:value={singleSelection.attributes.href}
+                disabled={singleSelection?.isFolder()}
+            />
+            {#if singleSelection.id == 0}
+                <div class="no-selection">
+                    <p>No selection</p>
+                </div>
+            {/if}
+        </div>
+        
+        <div class="button-holder">
+            <button onclick={() => selection.moveUp()}>Move Up</button>
+            <button onclick={() => selection.moveDown()}>Move Down</button>
+            <button onclick={() => selection.touch()}>Touch</button>
+            <button onclick={() => selection.clear()}>Unselect</button>
+            <button onclick={() => selection.delete()}>Delete</button>
+            {#if singleSelection?.isFolder()}
+                <button onclick={() => selection.newBookmark()}>New</button>
+                <button onclick={() => selection.newFolder()}>New Folder</button>
+            {/if}
         </div>
     </div>
 </div>
@@ -114,10 +116,18 @@
     }
 
     .field-holder {
+        position: relative;
         display: flex;
         flex-direction: column;
         align-items: center;
         margin: 8px;
+    }
+
+    .blurred {
+        filter: blur(8px);
+        opacity: 0.6;
+        pointer-events: none;
+        user-select: none;
     }
 
     .date-holder {
@@ -144,9 +154,17 @@
     }
 
     .no-selection {
+        position: absolute;
+        height: 100%;
+        width: 100%;
+        background: var(--cover-color);
+        display: flex;
         align-items: center;
-        text-align: center;
-        font-size: larger;
-        font-style: bold;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .no-selection p {
+        color: var(--text-color);
     }
 </style>

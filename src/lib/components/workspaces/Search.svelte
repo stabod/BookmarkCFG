@@ -1,71 +1,43 @@
 <script>
     import { getContext } from "svelte";
-    import { SvelteSet } from "svelte/reactivity";
     import BookmarkList from "$lib/components/BookmarkList.svelte";
+    import { BookmarkSearch } from "$lib/bookmark-search.svelte";
     import { NAME_ID, URL_ID, ADD_DATE_ID, LAST_MODIFIED_ID } from "$lib/bookmark.svelte";
 
-    const fieldFilters = new SvelteSet([NAME_ID, URL_ID, ADD_DATE_ID, LAST_MODIFIED_ID]);
-
     const data = getContext("bookmarkData");
-    let searchText = $state("")
-    let searchArray = $derived.by(() => deriveSearchArray(fieldFilters));
-    let found = $derived.by(() => search(searchText));
-
-    function toggleFilter(filter) {
-        fieldFilters.has(filter) ? fieldFilters.delete(filter) : fieldFilters.add(filter);
-    }
-
-    function deriveSearchArray(filters) {
-        const arr = [];
-        if (!data.bookmarkArray) return arr;
-        for (const el of data.bookmarkArray) {
-            arr.push(el.toSearchString(filters));
-        }
-        return arr;
-    }
-    
-    function search(text) {
-        const query = searchText.trim().toLowerCase();
-        const arr = [];
-        for (const [i, v] of searchArray.entries()) {
-            if (v.match(query)) {
-                arr.push(data.bookmarkArray[i]);
-            }
-        }
-        return arr;
-    }
+    const search = new BookmarkSearch(data); 
 </script>
 
 <div class="search-holder">
     <div class="search-bar">
         <label for="search-box">Search</label>
-        <input id="search-box" type="text" bind:value={searchText}/>
-        <p>Found: {found.length}</p>
+        <input id="search-box" type="text" bind:value={search.searchText}/>
+        <p>Found: {search.getTotalFound()}</p>
     </div>
 
     <div class="filter-buttons-holder">
-        <button class={["filter-button", fieldFilters.has(NAME_ID) && "filter-button-pressed"]}
-                onclick={() => toggleFilter(NAME_ID)}>
-                {fieldFilters.has(NAME_ID) ? "Ignore Name" : "Search by Name" }
+        <button class={["filter-button", search.hasFilter(NAME_ID) && "filter-button-pressed"]}
+                onclick={() => search.toggleFilter(NAME_ID)}>
+                {search.hasFilter(NAME_ID) ? "Ignore Name" : "Search by Name" }
         </button>
 
-        <button class={["filter-button", fieldFilters.has(URL_ID) && "filter-button-pressed"]}
-                onclick={() => toggleFilter(URL_ID)}>
-                {fieldFilters.has(URL_ID) ? "Ignore URL" : "Search by URL" }
+        <button class={["filter-button", search.hasFilter(URL_ID) && "filter-button-pressed"]}
+                onclick={() => search.toggleFilter(URL_ID)}>
+                {search.hasFilter(URL_ID) ? "Ignore URL" : "Search by URL" }
         </button>
 
-        <button class={["filter-button", fieldFilters.has(ADD_DATE_ID) && "filter-button-pressed"]}
-                onclick={() => toggleFilter(ADD_DATE_ID)}>
-                {fieldFilters.has(ADD_DATE_ID) ? "Ignore Add Date" : "Search by Add Date" }
+        <button class={["filter-button", search.hasFilter(ADD_DATE_ID) && "filter-button-pressed"]}
+                onclick={() => search.toggleFilter(ADD_DATE_ID)}>
+                {search.hasFilter(ADD_DATE_ID) ? "Ignore Add Date" : "Search by Add Date" }
         </button>
 
-        <button class={["filter-button", fieldFilters.has(LAST_MODIFIED_ID) && "filter-button-pressed"]}
-                onclick={() => toggleFilter(LAST_MODIFIED_ID)}>
-                {fieldFilters.has(LAST_MODIFIED_ID) ? "Ignore Last Modified" : "Search by Last Modified" }
+        <button class={["filter-button", search.hasFilter(LAST_MODIFIED_ID) && "filter-button-pressed"]}
+                onclick={() => search.toggleFilter(LAST_MODIFIED_ID)}>
+                {search.hasFilter(LAST_MODIFIED_ID) ? "Ignore Last Modified" : "Search by Last Modified" }
         </button>
     </div>
 
-    <BookmarkList nodes={found}/>  
+    <BookmarkList nodes={search.foundArray}/>  
 </div>
 
 <style> 

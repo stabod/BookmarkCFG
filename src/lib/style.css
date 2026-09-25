@@ -8,6 +8,7 @@
   --accent-color-3: light-dark(#ffff66, #999900);
   --accent-color-4: light-dark(#ccff99, #669933);
   --warning-color: light-dark(#fc5555, #970000);
+  --cover-color: light-dark(rgba(208, 208, 208, 0.7), rgba(32, 32, 32, 0.7));
   --text-color: light-dark(#000000, #ffffff);
 }
 

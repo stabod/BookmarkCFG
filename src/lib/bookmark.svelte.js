@@ -102,8 +102,11 @@ export class Bookmark {
 
     static newEmpty() {
         const zero = {
-            tagName: "",
-            attributes: null,
+            tagName: "A",
+            attributes: [
+                { name: "add_date", value: 0 },
+                { name: "last_modified", value: 0 }
+            ],
             textContent: "",
             children: null,
         }

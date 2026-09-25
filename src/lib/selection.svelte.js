@@ -17,7 +17,11 @@ export class Selection {
     }
 
     hasSelection() {
-        return (this.#data != null || this.#selected.size > 0);
+        return (this.#data != null && this.#selected.size > 0);
+    }
+
+    getNumberSelected() {
+        return this.#selected.size;
     }
 
     isMultiSelectMode() {
@@ -51,7 +55,7 @@ export class Selection {
 
     getSingle() {
         if (!this.hasSelection() || this.#selected.size > 1) {
-            return null;
+            return Bookmark.newEmpty();
         }
         return this.#selected.values().next().value; // I hate this. 
     }
@@ -75,7 +79,6 @@ export class Selection {
 
     moveDown() {
         if (!this.hasSelection()) return;
-        
         for (const el of this.#selected) {
             const siblings = this.#data.getSiblingsOfNode(el);
             if (siblings.length == 1) continue;
@@ -89,7 +92,6 @@ export class Selection {
 
     newBookmark() {
         if (!this.hasSelection()) return;
-
         for (const el of this.#selected) {
             if (!el.isFolder()) continue;
             this.#data.addNode(el, false); 
@@ -98,7 +100,6 @@ export class Selection {
 
     newFolder() {
         if (!this.hasSelection()) return;
-
         for (const el of this.#selected) {
             if(!el.isFolder()) continue;
             this.#data.addNode(el, true);
@@ -107,10 +108,15 @@ export class Selection {
 
     touch() {
         if (!this.hasSelection()) return;
-
         for (const el of this.#selected) {
             el.touch();
         }
     }
-
+    
+    delete() {
+        if (!this.hasSelection()) return;
+        for (const el of this.#selected) {
+            this.#data.removeNode(el);
+        }
+    }
 }
