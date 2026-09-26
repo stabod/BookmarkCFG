@@ -40,7 +40,8 @@
   }
 </script>
 
-{#snippet titleElements()}
+<title>BookmarkCFG Editor</title>
+<main class="main-container">
   <div class="title-controls">
     <h1 class="title">BookmarkCFG</h1>
     <div>
@@ -48,27 +49,19 @@
       <button class="hidden-button" onclick={changeTheme}>Change Theme</button>
     </div>
   </div>
-{/snippet}
-
-{#snippet uploadElements()}
-  <div class="upload-holder">
-      <label class="upload-dialog" for="HTML-file-upload-input">
-        <span>Import bookmarks</span>
-        <input class="file-upload" id="HTML-file-upload-input" type="file" accept=".html" onchange={handleUpload}/>
-      </label>
-    </div>
-{/snippet}
-
-<title>BookmarkCFG Editor</title>
-<main class="main-container">
-  {@render titleElements()}
-  
   {#if errorMsg}
     <p class="warning">{errorMsg}</p>
   {/if}
 
   {#if !bookmarkData.isLoaded()}
-    {@render uploadElements()}
+    <div class="upload-holder">
+    <p>BookmarkCGG allows you to edit your bookmarks file. To begin, press one of the buttons below:</p>
+      <label class="upload-label" for="HTML-file-upload-input">
+        <span>Import bookmarks file</span>
+        <input class="visually-hidden" id="HTML-file-upload-input" type="file" accept=".html" onchange={handleUpload}/>
+      </label>
+      <button onclick={() => bookmarkData.newTree()}>Create new file</button>
+    </div>
   {:else}
     <Workspace/>
   {/if}
@@ -108,33 +101,32 @@
   }
 
   .upload-holder {
-    display:flex; 
+    background: var(--surface-color);
+    display: flex; 
+    flex-direction: column;
     justify-content: center; 
     align-items: center;
-  }
-
-  .upload-dialog {
-    background: var(--surface-color);
-    color: var(--text-color);
     padding: 8px 8px;
     border: 4px outset var(--border-color);
     border-radius: 4px;
-    cursor: pointer;
-    height: 50%;
-    width: 50%;
-    display: flex;
     position: absolute;
     top: 25%;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    left: 23.33%;
+    height: 50%;
+    width: 50%;
+
+  }
+
+  .upload-label:hover {
+    background-color: var(--accent-color-3);
+  }
+
+  .upload-label:active {
+    border-style: inset;
   }
   
   @media (max-width: 768px) {
-    .toolbar {
-      flex-direction: column;
-    }
-    .file-upload {
+    .upload-holder {
       width: 80%;
     }
   }

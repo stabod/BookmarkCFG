@@ -38,6 +38,12 @@ export class BookmarkData {
         BookmarkData.deriveFromTree(this.bookmarkTree, this.bookmarkArray, this.parentMap);
     }
 
+    newTree() {
+        const tree = Bookmark.newRoot();
+        this.bookmarkTree = tree;
+        BookmarkData.deriveFromTree(this.bookmarkTree, this.bookmarkArray, this.parentMap);
+    }
+
     clear() {
         this.bookmarkTree = null;
         this.bookmarkArray = [];
@@ -50,7 +56,7 @@ export class BookmarkData {
 
     getBookmarks() {
         if (!this.bookmarkTree) return null; 
-        return this.bookmarkTree.children;
+        return this.bookmarkTree;
     }
 
     getBookmarkArray() {

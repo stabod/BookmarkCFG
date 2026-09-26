@@ -86,7 +86,7 @@ export class Bookmark {
     } 
 
     static newFolder() {
-      const timeNow = timeNowSeconds();
+        const timeNow = timeNowSeconds();
         const attr = [
             { name: "add_date", value: timeNow },
             { name: "last_modified", value: timeNow }
@@ -111,6 +111,21 @@ export class Bookmark {
             children: null,
         }
         return new Bookmark(zero, true);
+    }
+
+    static newRoot() {
+        const timeNow = timeNowSeconds();
+        const attr = [
+            { name: "add_date", value: timeNow },
+            { name: "last_modified", value: timeNow }
+        ];
+        const obj = {
+            tagName: "H1",
+            attributes: attr,
+            textContent: "Bookmarks",
+            children: []
+        }
+        return new Bookmark(obj, false);
     }
 
     constructor(element, noID) {

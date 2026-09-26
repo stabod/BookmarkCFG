@@ -3,10 +3,12 @@
     import BookmarkNode from "./BookmarkNode.svelte";
     import bookmarkIcon from "$lib/assets/star.png";
     import folderIcon from "$lib/assets/folder.png";
-    let { node } = $props();
+    let { node }  = $props();
 
     const selection = getContext('selection');
     const foldContext = getContext('folded');
+    const folderOnly = getContext('folderOnly');
+
     const isFolded = $derived(foldContext?.has(node));
 
     function toggleFold() {
@@ -28,11 +30,11 @@
 
 {#snippet recursive(parent)}
     <ul class="node-list">
-        {#each parent.children as child}
+        {#each (folderOnly ? parent.children.filter((x) => x.isFolder()) : parent.children) as child}
             <li class="node-item">
                 <BookmarkNode
                     node={child}
-                />
+                    folderOnly={folderOnly}/>
             </li>
         {/each}
     </ul>
@@ -50,24 +52,21 @@
         {node.text}
     </button>
     {#if foldContext && node.isFolder()}
-        <button class={["fold-btn", isFolded && "folded-btn"]}
+        <button class="fold-btn"
                 onclick={toggleFold}>
-            {isFolded ? 'Unfold' : 'Fold'}
+            {isFolded ? '←' : '↓'}
         </button>
     {/if}
 </div>
-
 
 {#if !isFolded && node.children}
     {@render recursive(node)}
 {/if}
 
-
 <style>
     .node-list {
         list-style: none;
-        border-radius: 4px;
-        border-left: 2px groove;
+        border-left: 2px ridge;
     }
 
     .node-item {
@@ -79,7 +78,7 @@
     .bookmark-btn {
         background-color: var(--accent-color-1);
         color: var(--text-color);
-        padding: 4px 8px;
+        padding: 4px 4px;
         border-radius: 6px;
         border-style: outset;
         border-color: var(--border-color);
@@ -95,9 +94,5 @@
     .fold-btn {
         padding: 4px 8px;
         font-weight: 400;
-    }
-
-    .folded-btn {
-        background-color: var(--accent-color-3);
     }
 </style>

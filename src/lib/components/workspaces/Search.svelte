@@ -66,11 +66,11 @@
         width: 100%;
         background-color: var(--accent-color-1);
         border: 4px solid var(--border-color);
-        border-style: outset;
+        border-style: inset;
     }
 
     .filter-button-pressed {
         background-color: var(--accent-color-4);
-        border-style: inset;
+        border-style: outset;
     }
 </style>
