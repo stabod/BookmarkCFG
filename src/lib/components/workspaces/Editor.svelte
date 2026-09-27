@@ -2,6 +2,7 @@
     import { getContext, setContext } from "svelte";
     import { timestampToLocalDate, dateToSecTimestamp } from "$lib/datetime-utils.js";
     import BookmarkNode from "$lib/components/BookmarkNode.svelte";
+    import ReparentPopup from "../ReparentPopup.svelte";
 
     const data = getContext("bookmarkData");
     const selection = getContext("selection");
@@ -91,7 +92,7 @@
         </div>
         
         <div class="button-holder">
-            <button>Change Parent</button>
+            <ReparentPopup/>
             <button onclick={() => selection.moveUp()}>Move Up</button>
             <button onclick={() => selection.moveDown()}>Move Down</button>
             <button onclick={() => selection.touch()}>Touch</button>

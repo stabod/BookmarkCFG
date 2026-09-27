@@ -79,6 +79,23 @@ export class BookmarkData {
         return parent.children.indexOf(node);
     }
 
+    reparent(node, newParent) {
+        if (node === newParent) return;
+
+        const currentParent = this.getParentOfNode(node);
+        if (!currentParent) return;
+        if (currentParent === newParent) return;
+        const currentArray = currentParent.children;
+
+        const parentChildren = newParent.children;
+        if (!parentChildren) return;
+
+        const currentIndex = currentArray.indexOf(node);
+        currentArray.splice(currentIndex, 1);
+        parentChildren.push(node);
+        this.parentMap.set(node.id, newParent);
+    }
+
     swap(node1, node2) {
         const array1 = this.getSiblingsOfNode(node1);
         const index1 = array1.indexOf(node1);
@@ -128,6 +145,4 @@ export class BookmarkData {
         }
         return text;
     }
-
-
 }

@@ -5,13 +5,16 @@ export class Selection {
 
     #selected = new SvelteSet();
     #multiSelectMode = $state(false);
+    #blockMultiselect;
     #data = null;
 
-    constructor(data) {
+    constructor(data, blockMultiselect = false) {
         this.#data = data;
+        this.#blockMultiselect = blockMultiselect;
     }
 
     toggleMultiSelect() {
+        if (this.#blockMultiselect) return;
         this.#multiSelectMode = !this.#multiSelectMode;
         return this.#multiSelectMode;
     }
@@ -25,6 +28,7 @@ export class Selection {
     }
 
     isMultiSelectMode() {
+        if (this.#blockMultiselect) return false;
         return this.#multiSelectMode;
     }
 
@@ -33,6 +37,11 @@ export class Selection {
     }
 
     #mutliSelect(node) {
+        if (this.#blockMultiselect) {
+            this.select(node);
+            return;
+        }
+
         if (this.#selected.has(node)) {
             this.#selected.delete(node)
         } else {
@@ -62,7 +71,15 @@ export class Selection {
 
     clear() {
         this.#selected.clear();
-    }    
+    }
+
+    reparent(target) {
+        if (!this.hasSelection()) return;
+        if (!target.children) return;
+        for (const el of this.#selected) {
+            this.#data.reparent(el, target);
+        }
+    }
 
     moveUp() {
         if (!this.hasSelection()) return;
