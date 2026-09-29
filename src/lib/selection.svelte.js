@@ -62,6 +62,10 @@ export class Selection {
         }
     }
 
+    unselect(node) {
+        this.#selected.delete(node); 
+    }
+
     getSingle() {
         if (!this.hasSelection() || this.#selected.size > 1) {
             return Bookmark.newEmpty();

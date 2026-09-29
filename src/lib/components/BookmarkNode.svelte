@@ -20,7 +20,9 @@
     }
 
     function clickOnNode(event) {
-        if (event.shiftKey || selection.isMultiSelectMode()) {
+        if (selection.isSelected(node)) {
+            selection.unselect(node);
+        } else if (event.shiftKey || selection.isMultiSelectMode()) {
             selection.selectAdd(node);
         } else {
             selection.select(node);
