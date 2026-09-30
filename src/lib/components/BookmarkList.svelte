@@ -3,9 +3,11 @@
     import bookmarkIcon from "$lib/assets/star.png";
     import folderIcon from "$lib/assets/folder.png";
     import { NAME_ID, URL_ID, ADD_DATE_ID, LAST_MODIFIED_ID } from "$lib/bookmark.svelte";
+    import { getContext } from "svelte";
     let { nodes } = $props();
     
     const showRows = new SvelteSet([NAME_ID, URL_ID, ADD_DATE_ID, LAST_MODIFIED_ID]);
+    const locale = getContext("locale");
 
     function toggleVisibility(id) {
         showRows.has(id) ? showRows.delete(id) : showRows.add(id);
@@ -49,36 +51,36 @@
 <div class="visibility-buttons-holder">
     <button class={["visibility-button", showRows.has(NAME_ID) && "visible-row"]} 
             onclick={() => toggleVisibility(NAME_ID)}>
-            {showRows.has(NAME_ID) ? "Hide Name" : "Show Name"}
+            {showRows.has(NAME_ID) ? locale.ui?.list.hide_name_button : locale.ui?.list.show_name_button }
     </button>
 
     <button class={["visibility-button", showRows.has(URL_ID) && "visible-row"]} 
             onclick={() => toggleVisibility(URL_ID)}>
-            {showRows.has(URL_ID) ? "Hide URL" : "Show URL"}
+            {showRows.has(URL_ID) ? locale.ui?.list.hide_url_button : locale.ui.list.show_url_button }
     </button>
 
     <button class={["visibility-button", showRows.has(ADD_DATE_ID) && "visible-row"]} 
             onclick={() => toggleVisibility(ADD_DATE_ID)}>
-            {showRows.has(ADD_DATE_ID) ? "Hide Add Date" : "Show Add Date"}
+            {showRows.has(ADD_DATE_ID) ?  locale.ui?.list.hide_add_date_button : locale.ui?.list.show_add_date_button }
     </button>
 
     <button class={["visibility-button", showRows.has(LAST_MODIFIED_ID) && "visible-row"]} 
             onclick={() => toggleVisibility(LAST_MODIFIED_ID)}>
-            {showRows.has(LAST_MODIFIED_ID) ? "Hide Last Modified" : "Show Last Modified"}
+            {showRows.has(LAST_MODIFIED_ID) ? locale.ui?.list.hide_last_modified_button : locale.ui?.list.show_last_modified_button }
     </button>
 </div>
 
 <div class="table-holder">
     {#if showRows.size == 0}
-        <p>All categories hidden</p>
+        <p>{locale.ui?.list.all_hidden}</p>
     {/if}
     <table>
         <thead>
             <tr>
-                {#if showRows.has(NAME_ID)}<th>Name</th>{/if}
-                {#if showRows.has(URL_ID)}<th>URL</th>{/if}
-                {#if showRows.has(ADD_DATE_ID)}<th>Add Date</th>{/if}
-                {#if showRows.has(LAST_MODIFIED_ID)}<th>Last Modified</th>{/if}
+                {#if showRows.has(NAME_ID)}<th>{locale.ui?.list.name_column_title}</th>{/if}
+                {#if showRows.has(URL_ID)}<th>{locale.ui?.list.url_column_title}</th>{/if}
+                {#if showRows.has(ADD_DATE_ID)}<th>{locale.ui?.list.add_date_column_title}</th>{/if}
+                {#if showRows.has(LAST_MODIFIED_ID)}<th>{locale.ui?.list.last_modified_column_title}</th>{/if}
             </tr>
         </thead>
         <tbody>

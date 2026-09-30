@@ -13,13 +13,14 @@
 
     let openTab = $state(EDITOR_TAB_ID);
     const bookmarkData = getContext('bookmarkData');
+    const locale = getContext('locale');
 </script>
 
 <div class="tab-button-holder">
-    <button class={['tab-button', openTab==EDITOR_TAB_ID && "tab-selected" ]} onclick={() => openTab=0}>Editor</button>
-    <button class={['tab-button', openTab==SEARCH_TAB_ID && "tab-selected" ]} onclick={() => openTab=1}>Search</button>
-    <button class={['tab-button', openTab==STATS_TAB_ID && "tab-selected" ]} onclick={() => openTab=2}>Stats</button>
-    <button class={['tab-button', openTab==SAVELOAD_TAB_ID && "tab-selected" ]} onclick={() => openTab=3}>Save/Load</button>
+    <button class={['tab-button', openTab==EDITOR_TAB_ID && "tab-selected" ]} onclick={() => openTab=0}>{locale.ui?.top.editor_tab_button}</button>
+    <button class={['tab-button', openTab==SEARCH_TAB_ID && "tab-selected" ]} onclick={() => openTab=1}>{locale.ui?.top.search_tab_button}</button>
+    <button class={['tab-button', openTab==STATS_TAB_ID && "tab-selected" ]} onclick={() => openTab=2}>{locale.ui?.top.stats_tab_button}</button>
+    <button class={['tab-button', openTab==SAVELOAD_TAB_ID && "tab-selected" ]} onclick={() => openTab=3}>{locale.ui?.top.save_load_tab_button}</button>
 </div>
 <div class="workspace">
     <section class="pane">

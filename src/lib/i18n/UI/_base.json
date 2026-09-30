@@ -1,0 +1,83 @@
+{
+    "generic": {
+        "bookmark_singular": "",
+        "bookmark_plural": "",
+        "folder_singular": "",
+        "folder_plural": "",
+        "confirm": "",
+        "close": ""
+    },
+    "top": {
+        "help_button": "",
+        "change_theme_button": "",
+        "language_button": "",
+        "language_change_title": "",
+        "welcome_text": "",
+        "import_html_button": "",
+        "create_new_file_button": "",
+        "editor_tab_button": "",
+        "search_tab_button": "",
+        "stats_tab_button": "",
+        "save_load_tab_button": ""
+    },
+    "list": {
+        "hide_name_button": "",
+        "hide_url_button": "",
+        "hide_add_date_button": "",
+        "hide_last_modified_button": "",
+        "show_name_button": "",
+        "show_url_button": "",
+        "show_add_date_button": "",
+        "show_last_modified_button": "",
+        "name_column_title": "",
+        "url_column_title": "",
+        "add_date_column_title": "",
+        "last_modified_column_title": "",
+        "all_hidden": ""
+    },
+    "editor": {
+        "title_label": "",
+        "date_added_label": "",
+        "date_added_timestamp_label": "",
+        "last_modified_label": "",
+        "last_modified_timestamp_label": "",
+        "url_label": "",
+        "change_parent_button": "",
+        "change_parent_title": "",
+        "change_parent_text": "",
+        "move_up_button": "",
+        "move_down_button": "",
+        "touch_button": "",
+        "deselect_button": "",
+        "new_bookmark_button": "",
+        "new_folder_button": "",
+        "delete_button": "",
+        "no_selection_text": "",
+        "multi_select_block_text": ""
+    }, 
+    "search": {
+        "search_label": "",
+        "found_text": "",
+        "ignore_name_button": "",
+        "ignore_url_button": "",
+        "ignore_add_date_button": "",
+        "ignore_last_modified_button": "",
+        "search_by_name_button": "",
+        "search_by_url_button": "",
+        "search_by_add_date_button": "",
+        "search_by_last_modified_button": ""
+    },
+    "stats": {
+        "total_label": "",
+        "bookmarks_label": "",
+        "folders_label": "",
+        "duplicates_label": "",
+        "no_duplicates_text": ""
+    },
+    "save_load": {
+        "export_html_button": "",
+        "export_json_button": "",
+        "export_txt_button": "",
+        "unload_button": ""
+    }
+}

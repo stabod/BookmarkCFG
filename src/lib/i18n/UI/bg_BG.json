@@ -1,0 +1,83 @@
+{
+    "generic": {
+        "bookmark_singular": "отметка",
+        "bookmark_plural": "отметки",
+        "folder_singular": "папка",
+        "folder_plural": "папки",
+        "confirm": "Потвърждаване",
+        "close": "Затвори"
+    },
+    "top": {
+        "help_button": "Помощ",
+        "change_theme_button": "Промяна на цветовата гама",
+        "language_button": "Език",
+        "language_change_title": "Изберете език:",
+        "welcome_text": "BookmarkCGG е приложение за модифициране на файлове с отметки. Повечето уеб браузъри експортират отметките към HTML файл. За повече информация вижте раздела за помощ. За да започните, натиснете един от долните бутони:",
+        "import_html_button": "Качване на HTML файл",
+        "create_new_file_button": "Създаване на нов празен файл",
+        "editor_tab_button": "Редактор",
+        "search_tab_button": "Търсене",
+        "stats_tab_button": "Статистика",
+        "save_load_tab_button": "Запис/Зареждане"
+    },
+    "list": {
+        "hide_name_button": "Скриване на името",
+        "hide_url_button": "Скриване на URL",
+        "hide_add_date_button": "Скриване на дата на добавяне",
+        "hide_last_modified_button": "Скриване на дата на последна промяна",
+        "show_name_button": "Показване на името",
+        "show_url_button": "Показване на URL",
+        "show_add_date_button": "Показване на дата на добавяне",
+        "show_last_modified_button": "Показване на дата на последна промяна",
+        "name_column_title": "Заглавие",
+        "url_column_title": "URL",
+        "add_date_column_title": "Дата на добавяне",
+        "last_modified_column_title": "Дата на последна промяна",
+        "all_hidden": "Всички категории са скрити"
+    },
+    "editor": {
+        "title_label": "Име",
+        "date_added_label": "Дата на добавяне",
+        "date_added_timestamp_label": "Дата на добавяне в timestamp формат",
+        "last_modified_label": "Дата на последна промяна",
+        "last_modified_timestamp_label": "Дата на последна промяна в timestamp формат",
+        "url_label": "URL",
+        "change_parent_button": "Промяна на родител",
+        "change_parent_title": "Изберете нов родител:",
+        "change_parent_text": "Преместване на ",
+        "move_up_button": "Преместване нагоре",
+        "move_down_button": "Преместване надолу",
+        "touch_button": "Докосване",
+        "deselect_button": "Премахване на избор",
+        "new_bookmark_button": "Нова отметка",
+        "new_folder_button": "Нова папка",
+        "delete_button": "Изтриване",
+        "no_selection_text": "Няма избрана отметка",
+        "multi_select_block_text": "Този панел не е достъпен при избор на повече от една отметка. Избрани са "
+    }, 
+    "search": {
+        "search_label": "Търсене",
+        "found_text": "Намерени",
+        "ignore_name_button": "Игнорирай име",
+        "ignore_url_button": "Игнорирай URL",
+        "ignore_add_date_button": "Игнорирай дата на добавяне",
+        "ignore_last_modified_button": "Игнорирай дата на последна промяна",
+        "search_by_name_button": "Търсене по име",
+        "search_by_url_button": "Търсене по URL",
+        "search_by_add_date_button": "Търсене по дата на добавяне",
+        "search_by_last_modified_button": "Търсене по дата на последна промяна"
+    },
+    "stats": {
+        "total_label": "Общо: ",
+        "bookmarks_label": "Отметки: ",
+        "folders_label": "Папки: ",
+        "duplicates_label": "Копия: ",
+        "no_duplicates_text": "Няма намерени копия."
+    },
+    "save_load": {
+        "export_html_button": "Експортиране към HTML",
+        "export_json_button": "Експортиране към JSON",
+        "export_txt_button": "Експортиране към текс",
+        "unload_button": "Премахване на зареден файл"
+    }
+}

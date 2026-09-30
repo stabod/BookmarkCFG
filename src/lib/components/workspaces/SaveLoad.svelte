@@ -3,13 +3,14 @@
     import { getContext } from "svelte";
 
     const data = getContext("bookmarkData");
+    const locale = getContext("locale");
 </script>
 
 <div class="save-load-holder">
-    <button onclick={() => exportHTML(data.toHTML())}>Export to HTML</button>
-    <button>Export to text TODO</button>
-    <button>Export to JSON TODO</button>
-    <button onclick={() => data.clear()} class="warning">Unload</button>
+    <button onclick={() => exportHTML(data.toHTML())}>{locale.ui?.save_load.export_html_button}</button>
+    <button>{locale.ui?.save_load.export_json_button} TODO</button>
+    <button>{locale.ui?.save_load.export_txt_button} TODO</button>
+    <button onclick={() => data.clear()} class="warning">{locale.ui?.save_load.unload_button}</button>
 </div>
 
 <style>

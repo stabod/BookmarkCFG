@@ -5,35 +5,36 @@
     import { NAME_ID, URL_ID, ADD_DATE_ID, LAST_MODIFIED_ID } from "$lib/bookmark.svelte";
 
     const data = getContext("bookmarkData");
+    const locale = getContext("locale");
     const search = new BookmarkSearch(data); 
 </script>
 
 <div class="search-holder">
     <div class="search-bar">
-        <label for="search-box">Search</label>
+        <label for="search-box">{locale.ui?.search.search_label}</label>
         <input id="search-box" type="text" bind:value={search.searchText}/>
-        <p>Found: {search.getTotalFound()}</p>
+        <p>{locale.ui?.search.found_text} {search.getTotalFound()}</p>
     </div>
 
     <div class="filter-buttons-holder">
         <button class={["filter-button", search.hasFilter(NAME_ID) && "filter-button-pressed"]}
                 onclick={() => search.toggleFilter(NAME_ID)}>
-                {search.hasFilter(NAME_ID) ? "Ignore Name" : "Search by Name" }
+                {search.hasFilter(NAME_ID) ? locale.ui?.search.ignore_name_button :  locale.ui?.search.search_by_name_button }
         </button>
 
         <button class={["filter-button", search.hasFilter(URL_ID) && "filter-button-pressed"]}
                 onclick={() => search.toggleFilter(URL_ID)}>
-                {search.hasFilter(URL_ID) ? "Ignore URL" : "Search by URL" }
+                {search.hasFilter(URL_ID) ? locale.ui?.search.ignore_url_button :  locale.ui?.search.search_by_url_button }
         </button>
 
         <button class={["filter-button", search.hasFilter(ADD_DATE_ID) && "filter-button-pressed"]}
                 onclick={() => search.toggleFilter(ADD_DATE_ID)}>
-                {search.hasFilter(ADD_DATE_ID) ? "Ignore Add Date" : "Search by Add Date" }
+                {search.hasFilter(ADD_DATE_ID) ? locale.ui?.search.ignore_add_date_button :  locale.ui?.search.search_by_add_date_button }
         </button>
 
         <button class={["filter-button", search.hasFilter(LAST_MODIFIED_ID) && "filter-button-pressed"]}
                 onclick={() => search.toggleFilter(LAST_MODIFIED_ID)}>
-                {search.hasFilter(LAST_MODIFIED_ID) ? "Ignore Last Modified" : "Search by Last Modified" }
+                {search.hasFilter(LAST_MODIFIED_ID) ? locale.ui?.search.ignore_last_modified_button :  locale.ui?.search.search_by_last_modified_button }
         </button>
     </div>
 

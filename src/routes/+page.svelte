@@ -4,17 +4,21 @@
   import { SvelteSet } from 'svelte/reactivity';
   import Workspace from '$lib/components/Workspace.svelte';
   import HelpPopup from '$lib/components/HelpPopup.svelte';
+  import LanguageChange from '$lib/components/LanguageChange.svelte';
   import { BookmarkData } from '$lib/bookmark-data.svelte.js'; 
   import { Selection } from '$lib/selection.svelte.js';
+  import { Locale } from '$lib/locale.svelte'; 
 
   const bookmarkData = new BookmarkData();
   const selection = new Selection(bookmarkData);
+  const locale = new Locale();
   let errorMsg = $state("");
   let isDark = browser ? window.matchMedia('(prefers-color-scheme: dark)').matches : false;
 
   setContext('folded', new SvelteSet());
   setContext('bookmarkData', bookmarkData);
   setContext('selection', selection);
+  setContext('locale', locale);
 
   async function handleUpload(event) {
     const file = event.target.files?.[0];
@@ -45,8 +49,9 @@
   <div class="title-controls">
     <h1 class="title">BookmarkCFG</h1>
     <div>
+      <LanguageChange/>
       <HelpPopup/>
-      <button class="hidden-button" onclick={changeTheme}>Change Theme</button>
+      <button class="hidden-button" onclick={changeTheme}>{locale.ui?.top.change_theme_button}</button>
     </div>
   </div>
   {#if errorMsg}
@@ -55,12 +60,12 @@
 
   {#if !bookmarkData.isLoaded()}
     <div class="upload-holder">
-    <p>BookmarkCGG allows you to edit your bookmarks file. To begin, press one of the buttons below:</p>
+    <p>{locale.ui?.top.welcome_text}</p>
       <label class="upload-label" for="HTML-file-upload-input">
-        <span>Import bookmarks file</span>
+        <span>{locale.ui?.top.import_html_button}</span>
         <input class="visually-hidden" id="HTML-file-upload-input" type="file" accept=".html" onchange={handleUpload}/>
       </label>
-      <button onclick={() => bookmarkData.newTree()}>Create new file</button>
+      <button onclick={() => bookmarkData.newTree()}>{locale.ui?.top.create_new_file_button}</button>
     </div>
   {:else}
     <Workspace/>

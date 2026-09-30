@@ -1,0 +1,83 @@
+{
+    "generic": {
+        "bookmark_singular": "bookmark",
+        "bookmark_plural": "bookmarks",
+        "folder_singular": "folder",
+        "folder_plural": "folders",
+        "confirm": "Confirm",
+        "close": "Close"
+    },
+    "top": {
+        "help_button": "Help",
+        "change_theme_button": "Change Theme",
+        "language_button": "Language",
+        "language_change_title": "Choose Language:",
+        "welcome_text": "BookmarkCGG allows you to edit your bookmarks file. Web Browsers usually export bookmarks to a HTML file. Read more in the help section of the application. To begin, press one of the buttons below:",
+        "import_html_button": "Import HTML file",
+        "create_new_file_button": "Create new empty file",
+        "editor_tab_button": "Editor",
+        "search_tab_button": "Search",
+        "stats_tab_button": "Statistics",
+        "save_load_tab_button": "Save/Load"
+    },
+    "list": {
+        "hide_name_button": "Hide name",
+        "hide_url_button": "Hide URL",
+        "hide_add_date_button": "Hide add date",
+        "hide_last_modified_button": "Hide last modified date",
+        "show_name_button": "Show name",
+        "show_url_button": "Show URL",
+        "show_add_date_button": "Show add date",
+        "show_last_modified_button": "Show last modified date",
+        "name_column_title": "Name",
+        "url_column_title": "URL",
+        "add_date_column_title": "Add Date",
+        "last_modified_column_title": "Last Modified",
+        "all_hidden": "All categories hidden"
+    },
+    "editor": {
+        "title_label": "Title",
+        "date_added_label": "Date added",
+        "date_added_timestamp_label": "Date added timestamp",
+        "last_modified_label": "Last modified",
+        "last_modified_timestamp_label": "Last modified timestamp",
+        "url_label": "URL",
+        "change_parent_button": "Change parent",
+        "change_parent_title": "Select new parent:",
+        "change_parent_text": "Moving ",
+        "move_up_button": "Move up",
+        "move_down_button": "Move down",
+        "touch_button": "Touch",
+        "deselect_button": "Deselect",
+        "new_bookmark_button": "New bookmark",
+        "new_folder_button": "New folder",
+        "delete_button": "Delete",
+        "no_selection_text": "No selection",
+        "multi_select_block_text": "Not available during multiple selections. Currently selected "
+    },
+    "search": {
+        "search_label": "Search",
+        "found_text": "Found ",
+        "ignore_name_button": "Ignore name",
+        "ignore_url_button": "Ignore URL",
+        "ignore_add_date_button": "Ignore add date",
+        "ignore_last_modified_button": "Ignore last modified date",
+        "search_by_name_button": "Search by name",
+        "search_by_url_button": "Search by URL",
+        "search_by_add_date_button": "Search by add date",
+        "search_by_last_modified_button": "Search by last modified date"
+    },
+    "stats": {
+        "total_label": "Total: ",
+        "bookmarks_label": "Bookmarks: ",
+        "folders_label": "Folders: ",
+        "duplicates_label": "Duplicates: ",
+        "no_duplicates_text": "No duplicates found."
+    },
+    "save_load": {
+        "export_html_button": "Export to HTML",
+        "export_json_button": "Export to JSON",
+        "export_txt_button": "Export to plain text",
+        "unload_button": "Unload data"
+    }
+}
