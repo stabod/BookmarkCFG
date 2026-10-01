@@ -1,13 +1,13 @@
 <script>
-    import { getContext } from 'svelte';
+    import { getContext } from "svelte";
     import BookmarkNode from "./BookmarkNode.svelte";
     import bookmarkIcon from "$lib/assets/star.png";
     import folderIcon from "$lib/assets/folder.png";
-    let { node }  = $props();
+    let { node } = $props();
 
-    const selection = getContext('selection');
-    const foldContext = getContext('folded');
-    const folderOnly = getContext('folderOnly');
+    const selection = getContext("selection");
+    const foldContext = getContext("folded");
+    const folderOnly = getContext("folderOnly");
 
     const isFolded = $derived(foldContext?.has(node));
 
@@ -32,31 +32,36 @@
 
 {#snippet recursive(parent)}
     <ul class="node-list">
-        {#each (folderOnly ? parent.children.filter((x) => x.isFolder()) : parent.children) as child}
+        {#each folderOnly ? parent.children.filter( (x) => x.isFolder(), ) : parent.children as child}
             <li class="node-item">
-                <BookmarkNode
-                    node={child}
-                    folderOnly={folderOnly}/>
+                <BookmarkNode node={child} {folderOnly} />
             </li>
         {/each}
     </ul>
 {/snippet}
 
 <div draggable="true">
-    <button class={selection.isSelected(node) ? "bookmark-btn selected" : "bookmark-btn"}
-            onclick={(event) => clickOnNode(event)}>
+    <button
+        class={selection.isSelected(node)
+            ? "bookmark-btn selected"
+            : "bookmark-btn"}
+        onclick={(event) => clickOnNode(event)}
+    >
         {#if node.isFolder()}
-            <img alt='' src={folderIcon} class="bookmark-icon"/>
+            <img alt="" src={folderIcon} class="bookmark-icon" />
         {/if}
         {#if !node.isFolder()}
-            <img alt='' src={node.attributes.icon ? node.attributes.icon : bookmarkIcon} class="bookmark-icon"/>
+            <img
+                alt=""
+                src={node.attributes.icon ? node.attributes.icon : bookmarkIcon}
+                class="bookmark-icon"
+            />
         {/if}
         {node.text}
     </button>
     {#if foldContext && node.isFolder()}
-        <button class="fold-btn"
-                onclick={toggleFold}>
-            {isFolded ? '←' : '↓'}
+        <button class="fold-btn" onclick={toggleFold}>
+            {isFolded ? "←" : "↓"}
         </button>
     {/if}
 </div>
@@ -74,7 +79,6 @@
     .node-item {
         margin: 4px 0;
         padding: 2px 4px;
-        
     }
 
     .bookmark-btn {

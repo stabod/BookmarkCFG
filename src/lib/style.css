@@ -1,85 +1,85 @@
 :root {
-  color-scheme: light dark;
-  --background-color: light-dark(#b0dfdf, #12161A);
-  --surface-color: light-dark(#9fb2d8, #313e4d);
-  --border-color: light-dark(#e1e7ee, #414449);
-  --accent-color-1: light-dark(#ddaaff, #774499);
-  --accent-color-2: light-dark(#ffcc99, #996633);
-  --accent-color-3: light-dark(#ffff66, #999900);
-  --accent-color-4: light-dark(#ccff99, #669933);
-  --warning-color: light-dark(#fc5555, #970000);
-  --cover-color: light-dark(rgba(208, 208, 208, 0.9), rgba(32, 32, 32, 0.9));
-  --text-color: light-dark(#000000, #ffffff);
+    color-scheme: light dark;
+    --background-color: light-dark(#b0dfdf, #12161a);
+    --surface-color: light-dark(#9fb2d8, #313e4d);
+    --border-color: light-dark(#e1e7ee, #414449);
+    --accent-color-1: light-dark(#ddaaff, #774499);
+    --accent-color-2: light-dark(#ffcc99, #996633);
+    --accent-color-3: light-dark(#ffff66, #999900);
+    --accent-color-4: light-dark(#ccff99, #669933);
+    --warning-color: light-dark(#fc5555, #970000);
+    --cover-color: light-dark(rgba(208, 208, 208, 0.9), rgba(32, 32, 32, 0.9));
+    --text-color: light-dark(#000000, #ffffff);
 }
 
-:root[force-theme='light'] {
-  color-scheme: light;
+:root[force-theme="light"] {
+    color-scheme: light;
 }
 
-:root[force-theme='dark'] {
-  color-scheme: dark;
+:root[force-theme="dark"] {
+    color-scheme: dark;
 }
 
 button,
 .upload-label {
-  background-color: var(--accent-color-2);
-  color: var(--text-color);
-  padding: 8px;
-  border-style: outset;
-  border-radius: 0px;
-  border-width: 4px;
-  border-color: var(--border-color);
-  font-weight: 600;
-  font-size: 1rem;
-  cursor: pointer;
+    background-color: var(--accent-color-2);
+    color: var(--text-color);
+    padding: 8px;
+    border-style: outset;
+    border-radius: 0px;
+    border-width: 4px;
+    border-color: var(--border-color);
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
 }
 
 button:hover {
-  background-color: var(--accent-color-3);
+    background-color: var(--accent-color-3);
 }
 
 button:active {
-  background-color: var(--accent-color-3);
-  border-style: inset;
+    background-color: var(--accent-color-3);
+    border-style: inset;
 }
 
 .strech-button {
-  width: 100%;
+    width: 100%;
 }
 
 .hidden-button {
-  background-color: transparent;
-  border: none;
+    background-color: transparent;
+    border: none;
 }
 
 input[type="text"],
 input[type="datetime-local"],
 input[type="number"] {
-  width: 90%;
-  padding: 8px;
-  border-radius: 8px;
-  font-size: 1em;
-  box-sizing: border-box;
-  border-style: inset;
+    width: 90%;
+    padding: 8px;
+    border-radius: 8px;
+    font-size: 1em;
+    box-sizing: border-box;
+    border-style: inset;
 }
 
 .bookmark-icon {
-        height: 16px;
-        width: 16px;
-    }
+    height: 16px;
+    width: 16px;
+}
 
 .warning {
     background-color: var(--warning-color);
-  }
+}
 
 .visually-hidden {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border: 0;
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
 }

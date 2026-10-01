@@ -2,7 +2,6 @@ import { SvelteSet } from "svelte/reactivity";
 import { Bookmark } from "./bookmark.svelte.js";
 
 export class Selection {
-
     #selected = new SvelteSet();
     #multiSelectMode = $state(false);
     #blockMultiselect;
@@ -20,7 +19,7 @@ export class Selection {
     }
 
     hasSelection() {
-        return (this.#data != null && this.#selected.size > 0);
+        return this.#data != null && this.#selected.size > 0;
     }
 
     getNumberSelected() {
@@ -43,7 +42,7 @@ export class Selection {
         }
 
         if (this.#selected.has(node)) {
-            this.#selected.delete(node)
+            this.#selected.delete(node);
         } else {
             this.#selected.add(node);
         }
@@ -55,7 +54,7 @@ export class Selection {
 
     select(node) {
         if (this.#multiSelectMode) {
-            this.#mutliSelect(node); 
+            this.#mutliSelect(node);
         } else {
             this.#selected.clear();
             this.#selected.add(node);
@@ -63,14 +62,14 @@ export class Selection {
     }
 
     unselect(node) {
-        this.#selected.delete(node); 
+        this.#selected.delete(node);
     }
 
     getSingle() {
         if (!this.hasSelection() || this.#selected.size > 1) {
             return Bookmark.newEmpty();
         }
-        return this.#selected.values().next().value; // I hate this. 
+        return this.#selected.values().next().value; // I hate this.
     }
 
     clear() {
@@ -94,7 +93,7 @@ export class Selection {
             const index = siblings.indexOf(el);
             if (index == 0) continue;
 
-            this.#data.swap(siblings[index], siblings[index-1]);
+            this.#data.swap(siblings[index], siblings[index - 1]);
         }
     }
 
@@ -105,9 +104,9 @@ export class Selection {
             if (siblings.length == 1) continue;
 
             const index = siblings.indexOf(el);
-            if (index == (siblings.length - 1)) continue;
+            if (index == siblings.length - 1) continue;
 
-            this.#data.swap(siblings[index], siblings[index+1]);
+            this.#data.swap(siblings[index], siblings[index + 1]);
         }
     }
 
@@ -115,14 +114,14 @@ export class Selection {
         if (!this.hasSelection()) return;
         for (const el of this.#selected) {
             if (!el.isFolder()) continue;
-            this.#data.addNode(el, false); 
+            this.#data.addNode(el, false);
         }
     }
 
     newFolder() {
         if (!this.hasSelection()) return;
         for (const el of this.#selected) {
-            if(!el.isFolder()) continue;
+            if (!el.isFolder()) continue;
             this.#data.addNode(el, true);
         }
     }
@@ -133,7 +132,7 @@ export class Selection {
             el.touch();
         }
     }
-    
+
     delete() {
         if (!this.hasSelection()) return;
         for (const el of this.#selected) {

@@ -1,12 +1,22 @@
 <script>
+    import { getContext } from "svelte";
     import { SvelteSet } from "svelte/reactivity";
     import bookmarkIcon from "$lib/assets/star.png";
     import folderIcon from "$lib/assets/folder.png";
-    import { NAME_ID, URL_ID, ADD_DATE_ID, LAST_MODIFIED_ID } from "$lib/bookmark.svelte";
-    import { getContext } from "svelte";
+    import {
+        NAME_ID,
+        URL_ID,
+        ADD_DATE_ID,
+        LAST_MODIFIED_ID,
+    } from "$lib/bookmark.svelte";
     let { nodes } = $props();
-    
-    const showRows = new SvelteSet([NAME_ID, URL_ID, ADD_DATE_ID, LAST_MODIFIED_ID]);
+
+    const showRows = new SvelteSet([
+        NAME_ID,
+        URL_ID,
+        ADD_DATE_ID,
+        LAST_MODIFIED_ID,
+    ]);
     const locale = getContext("locale");
 
     function toggleVisibility(id) {
@@ -16,17 +26,23 @@
 
 {#snippet nodeRow(node)}
     <tr class="node-holder">
-        {#if showRows.has(NAME_ID)} 
+        {#if showRows.has(NAME_ID)}
             <td>
                 {#if node.isFolder()}
-                    <img class="bookmark-icon" alt='' src={folderIcon}/>
+                    <img class="bookmark-icon" alt="" src={folderIcon} />
                 {:else}
-                    <img class="bookmark-icon" alt='' src={node.attributes.icon ? node.attributes.icon : bookmarkIcon}/>
+                    <img
+                        class="bookmark-icon"
+                        alt=""
+                        src={node.attributes.icon
+                            ? node.attributes.icon
+                            : bookmarkIcon}
+                    />
                 {/if}
                 {node.text}
             </td>
         {/if}
-        {#if showRows.has(URL_ID)} 
+        {#if showRows.has(URL_ID)}
             <td>
                 {#if node.isFolder()}
                     N/A
@@ -49,24 +65,46 @@
 {/snippet}
 
 <div class="visibility-buttons-holder">
-    <button class={["visibility-button", showRows.has(NAME_ID) && "visible-row"]} 
-            onclick={() => toggleVisibility(NAME_ID)}>
-            {showRows.has(NAME_ID) ? locale.ui?.list.hide_name_button : locale.ui?.list.show_name_button }
+    <button
+        class={["visibility-button", showRows.has(NAME_ID) && "visible-row"]}
+        onclick={() => toggleVisibility(NAME_ID)}
+    >
+        {showRows.has(NAME_ID)
+            ? locale.ui?.list.hide_name_button
+            : locale.ui?.list.show_name_button}
     </button>
 
-    <button class={["visibility-button", showRows.has(URL_ID) && "visible-row"]} 
-            onclick={() => toggleVisibility(URL_ID)}>
-            {showRows.has(URL_ID) ? locale.ui?.list.hide_url_button : locale.ui.list.show_url_button }
+    <button
+        class={["visibility-button", showRows.has(URL_ID) && "visible-row"]}
+        onclick={() => toggleVisibility(URL_ID)}
+    >
+        {showRows.has(URL_ID)
+            ? locale.ui?.list.hide_url_button
+            : locale.ui.list.show_url_button}
     </button>
 
-    <button class={["visibility-button", showRows.has(ADD_DATE_ID) && "visible-row"]} 
-            onclick={() => toggleVisibility(ADD_DATE_ID)}>
-            {showRows.has(ADD_DATE_ID) ?  locale.ui?.list.hide_add_date_button : locale.ui?.list.show_add_date_button }
+    <button
+        class={[
+            "visibility-button",
+            showRows.has(ADD_DATE_ID) && "visible-row",
+        ]}
+        onclick={() => toggleVisibility(ADD_DATE_ID)}
+    >
+        {showRows.has(ADD_DATE_ID)
+            ? locale.ui?.list.hide_add_date_button
+            : locale.ui?.list.show_add_date_button}
     </button>
 
-    <button class={["visibility-button", showRows.has(LAST_MODIFIED_ID) && "visible-row"]} 
-            onclick={() => toggleVisibility(LAST_MODIFIED_ID)}>
-            {showRows.has(LAST_MODIFIED_ID) ? locale.ui?.list.hide_last_modified_button : locale.ui?.list.show_last_modified_button }
+    <button
+        class={[
+            "visibility-button",
+            showRows.has(LAST_MODIFIED_ID) && "visible-row",
+        ]}
+        onclick={() => toggleVisibility(LAST_MODIFIED_ID)}
+    >
+        {showRows.has(LAST_MODIFIED_ID)
+            ? locale.ui?.list.hide_last_modified_button
+            : locale.ui?.list.show_last_modified_button}
     </button>
 </div>
 
@@ -77,10 +115,18 @@
     <table>
         <thead>
             <tr>
-                {#if showRows.has(NAME_ID)}<th>{locale.ui?.list.name_column_title}</th>{/if}
-                {#if showRows.has(URL_ID)}<th>{locale.ui?.list.url_column_title}</th>{/if}
-                {#if showRows.has(ADD_DATE_ID)}<th>{locale.ui?.list.add_date_column_title}</th>{/if}
-                {#if showRows.has(LAST_MODIFIED_ID)}<th>{locale.ui?.list.last_modified_column_title}</th>{/if}
+                {#if showRows.has(NAME_ID)}<th
+                        >{locale.ui?.list.name_column_title}</th
+                    >{/if}
+                {#if showRows.has(URL_ID)}<th
+                        >{locale.ui?.list.url_column_title}</th
+                    >{/if}
+                {#if showRows.has(ADD_DATE_ID)}<th
+                        >{locale.ui?.list.add_date_column_title}</th
+                    >{/if}
+                {#if showRows.has(LAST_MODIFIED_ID)}<th
+                        >{locale.ui?.list.last_modified_column_title}</th
+                    >{/if}
             </tr>
         </thead>
         <tbody>
@@ -90,7 +136,6 @@
         </tbody>
     </table>
 </div>
-
 
 <style>
     .table-holder {
@@ -108,7 +153,7 @@
         border-radius: 0;
         border-style: outset;
         padding: 4px;
-        margin: 4px
+        margin: 4px;
     }
 
     .visibility-buttons-holder {
@@ -132,9 +177,9 @@
     }
 
     table {
-      width: 100%;
-      table-layout: fixed;
-      border-collapse: separate;
+        width: 100%;
+        table-layout: fixed;
+        border-collapse: separate;
     }
 
     thead {
@@ -143,17 +188,19 @@
         top: 0;
     }
 
-    th, td {
-      padding: 8px;
-      border: 2px solid var(--border-color);
+    th,
+    td {
+        padding: 8px;
+        border: 2px solid var(--border-color);
 
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
 
     @media (max-width: 768px) {
-        thead, td {
+        thead,
+        td {
             font-size: 0.75em;
             white-space: normal;
         }

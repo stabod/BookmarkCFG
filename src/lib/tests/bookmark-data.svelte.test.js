@@ -1,6 +1,11 @@
 import { beforeAll, describe, test, expect } from "vitest";
 import { BookmarkData } from "$lib/bookmark-data.svelte.js";
-import { exampleCorrectObject, exampleCorrectArray, exampleCorrectParentMap, exampleHTML } from "./test-constants";
+import {
+    exampleCorrectObject,
+    exampleCorrectArray,
+    exampleCorrectParentMap,
+    exampleHTML,
+} from "./test-constants";
 
 let bookmarkData;
 let bookmarkArray;
@@ -13,9 +18,13 @@ beforeAll(() => {
     bookmarkMap = $state.snapshot(bookmarkData.parentMap);
 });
 
-describe('BookmarkData', () => {
-    test('correctly derives secondary structures', () => {
-        expect(JSON.stringify(bookmarkArray)).toEqual(JSON.stringify(exampleCorrectArray))
-        expect(JSON.stringify(bookmarkMap)).toEqual(JSON.stringify(exampleCorrectParentMap))
-    })
-})
+describe("BookmarkData", () => {
+    test("correctly derives secondary structures", () => {
+        expect(JSON.stringify(bookmarkArray)).toEqual(
+            JSON.stringify(exampleCorrectArray),
+        );
+        expect(JSON.stringify(bookmarkMap)).toEqual(
+            JSON.stringify(exampleCorrectParentMap),
+        );
+    });
+});

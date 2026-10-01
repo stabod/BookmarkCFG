@@ -54,7 +54,7 @@
         "delete_button": "Изтриване",
         "no_selection_text": "Няма избрана отметка",
         "multi_select_block_text": "Този панел не е достъпен при избор на повече от една отметка. Избрани са "
-    }, 
+    },
     "search": {
         "search_label": "Търсене",
         "found_text": "Намерени",

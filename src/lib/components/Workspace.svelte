@@ -1,10 +1,10 @@
 <script>
-    import { getContext } from 'svelte';
-    import BookmarkNode from '$lib/components/BookmarkNode.svelte';
-    import Editor from '$lib/components/workspaces/Editor.svelte';
-    import Search from '$lib/components/workspaces/Search.svelte';
-    import Stats from '$lib/components/workspaces/Stats.svelte';
-    import SaveLoad from '$lib/components/workspaces/SaveLoad.svelte';
+    import { getContext } from "svelte";
+    import BookmarkNode from "$lib/components/BookmarkNode.svelte";
+    import Editor from "$lib/components/workspaces/Editor.svelte";
+    import Search from "$lib/components/workspaces/Search.svelte";
+    import Stats from "$lib/components/workspaces/Stats.svelte";
+    import SaveLoad from "$lib/components/workspaces/SaveLoad.svelte";
 
     const EDITOR_TAB_ID = 0;
     const SEARCH_TAB_ID = 1;
@@ -12,26 +12,39 @@
     const SAVELOAD_TAB_ID = 3;
 
     let openTab = $state(EDITOR_TAB_ID);
-    const bookmarkData = getContext('bookmarkData');
-    const locale = getContext('locale');
+    const bookmarkData = getContext("bookmarkData");
+    const locale = getContext("locale");
 </script>
 
 <div class="tab-button-holder">
-    <button class={['tab-button', openTab==EDITOR_TAB_ID && "tab-selected" ]} onclick={() => openTab=0}>{locale.ui?.top.editor_tab_button}</button>
-    <button class={['tab-button', openTab==SEARCH_TAB_ID && "tab-selected" ]} onclick={() => openTab=1}>{locale.ui?.top.search_tab_button}</button>
-    <button class={['tab-button', openTab==STATS_TAB_ID && "tab-selected" ]} onclick={() => openTab=2}>{locale.ui?.top.stats_tab_button}</button>
-    <button class={['tab-button', openTab==SAVELOAD_TAB_ID && "tab-selected" ]} onclick={() => openTab=3}>{locale.ui?.top.save_load_tab_button}</button>
+    <button
+        class={["tab-button", openTab == EDITOR_TAB_ID && "tab-selected"]}
+        onclick={() => (openTab = 0)}>{locale.ui?.top.editor_tab_button}</button
+    >
+    <button
+        class={["tab-button", openTab == SEARCH_TAB_ID && "tab-selected"]}
+        onclick={() => (openTab = 1)}>{locale.ui?.top.search_tab_button}</button
+    >
+    <button
+        class={["tab-button", openTab == STATS_TAB_ID && "tab-selected"]}
+        onclick={() => (openTab = 2)}>{locale.ui?.top.stats_tab_button}</button
+    >
+    <button
+        class={["tab-button", openTab == SAVELOAD_TAB_ID && "tab-selected"]}
+        onclick={() => (openTab = 3)}
+        >{locale.ui?.top.save_load_tab_button}</button
+    >
 </div>
 <div class="workspace">
     <section class="pane">
-        {#if openTab == EDITOR_TAB_ID} 
-            <Editor/>
+        {#if openTab == EDITOR_TAB_ID}
+            <Editor />
         {:else if openTab == SEARCH_TAB_ID}
-            <Search/>
+            <Search />
         {:else if openTab == STATS_TAB_ID}
-            <Stats/>
+            <Stats />
         {:else if openTab == SAVELOAD_TAB_ID}
-            <SaveLoad/> 
+            <SaveLoad />
         {/if}
     </section>
 </div>

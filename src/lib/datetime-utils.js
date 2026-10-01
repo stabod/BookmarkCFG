@@ -4,7 +4,7 @@ export const MINUTES_IN_MILLISECONDS = 60 * MILLISECONDS_IN_SECOND;
 
 function timestampToDate(timestamp) {
     if (!timestamp) {
-        timestamp = '0';
+        timestamp = "0";
     }
     const ms = Number(timestamp) * MILLISECONDS_IN_SECOND;
     return new Date(ms);
@@ -12,7 +12,8 @@ function timestampToDate(timestamp) {
 
 export function timestampToLocalDate(timestamp) {
     const date = timestampToDate(timestamp);
-    const localMS = date.getTime() - (date.getTimezoneOffset() * MINUTES_IN_MILLISECONDS);
+    const localMS =
+        date.getTime() - date.getTimezoneOffset() * MINUTES_IN_MILLISECONDS;
     return new Date(localMS);
 }
 

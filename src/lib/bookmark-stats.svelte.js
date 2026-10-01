@@ -1,26 +1,31 @@
 export class BookmarkStats {
-
-    #total
-    #bookmarks 
-    #folders 
-    #duplicatesArray
-    #duplicates
+    #total;
+    #bookmarks;
+    #folders;
+    #duplicatesArray;
+    #duplicates;
 
     constructor(data) {
         this.data = data.getBookmarkArray();
         this.#total = $derived(this.data.length);
-        this.#bookmarks = $derived(this.data.filter((node) => !node.isFolder()).length ?? 0);
-        this.#folders = $derived(this.data.filter((node) => node.isFolder()).length ?? 0);
+        this.#bookmarks = $derived(
+            this.data.filter((node) => !node.isFolder()).length ?? 0,
+        );
+        this.#folders = $derived(
+            this.data.filter((node) => node.isFolder()).length ?? 0,
+        );
         this.#duplicatesArray = $derived.by(() => this.#findUniques());
     }
 
     #findUniques() {
-        if (this.data == null) { return 0; }
+        if (this.data == null) {
+            return 0;
+        }
         const unique = new Map();
         const arr = [];
         for (const el of this.data) {
-            if (el.isFolder()) { 
-                continue; 
+            if (el.isFolder()) {
+                continue;
             }
             if (unique.has(el.attributes.href)) {
                 arr.push(el);
@@ -36,7 +41,7 @@ export class BookmarkStats {
     }
 
     get bookmarks() {
-        return this.#bookmarks
+        return this.#bookmarks;
     }
 
     get folders() {

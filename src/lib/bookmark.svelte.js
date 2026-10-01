@@ -1,18 +1,27 @@
-import { DATE_ISO_STR_LIMIT, dateToSecTimestamp, timeNowSeconds, timestampToLocalDate } from "./datetime-utils";
-import { HEADER_TAGS, ELEMENT_TAG, ALLOWED_TAGS, escapeHTML } from "./html-utils";
+import {
+    DATE_ISO_STR_LIMIT,
+    dateToSecTimestamp,
+    timeNowSeconds,
+    timestampToLocalDate,
+} from "./datetime-utils";
+import {
+    HEADER_TAGS,
+    ELEMENT_TAG,
+    ALLOWED_TAGS,
+    escapeHTML,
+} from "./html-utils";
 
-export const NAME_ID = "name"
-export const URL_ID = "href"
-export const ADD_DATE_ID = "add_date"
-export const LAST_MODIFIED_ID = "last_modified"
+export const NAME_ID = "name";
+export const URL_ID = "href";
+export const ADD_DATE_ID = "add_date";
+export const LAST_MODIFIED_ID = "last_modified";
 
-const baseAttr = { 
-    add_date: 0, 
-    last_modified: 0
-}
+const baseAttr = {
+    add_date: 0,
+    last_modified: 0,
+};
 
 class BookmarkFrame {
-
     node = null;
     visited = null;
     depth = null;
@@ -22,7 +31,7 @@ class BookmarkFrame {
         if (node.children) {
             this.visited = false;
         }
-        this.depth = depth;    
+        this.depth = depth;
     }
 
     visit() {
@@ -33,14 +42,13 @@ class BookmarkFrame {
         if (!this.node.children) return [];
         const arr = [];
         for (const node of this.node.children.toReversed()) {
-            arr.push(new BookmarkFrame(node, this.depth+1));
+            arr.push(new BookmarkFrame(node, this.depth + 1));
         }
         return arr;
     }
 }
 
 export class Bookmark {
-
     static #nextID = 1;
     id;
     tag = $state("");
@@ -52,7 +60,7 @@ export class Bookmark {
         const attrObj = structuredClone(baseAttr);
         for (const attr of element.attributes) {
             const { name, value } = attr;
-            switch(name) {
+            switch (name) {
                 case "add_date":
                 case "last_modified":
                     attrObj[name] = Number(value);
@@ -74,29 +82,29 @@ export class Bookmark {
         const attr = [
             { name: "add_date", value: timeNow },
             { name: "last_modified", value: timeNow },
-            { name: "href", value: "https://www.example.com/"}
+            { name: "href", value: "https://www.example.com/" },
         ];
         const obj = {
             tagName: "A",
             attributes: attr,
             textContent: "New Bookmark",
-            children: null
-        }
+            children: null,
+        };
         return new Bookmark(obj, false);
-    } 
+    }
 
     static newFolder() {
         const timeNow = timeNowSeconds();
         const attr = [
             { name: "add_date", value: timeNow },
-            { name: "last_modified", value: timeNow }
+            { name: "last_modified", value: timeNow },
         ];
         const obj = {
             tagName: "H3",
             attributes: attr,
             textContent: "New Folder",
-            children: []
-        }
+            children: [],
+        };
         return new Bookmark(obj, false);
     }
 
@@ -105,11 +113,11 @@ export class Bookmark {
             tagName: "A",
             attributes: [
                 { name: "add_date", value: 0 },
-                { name: "last_modified", value: 0 }
+                { name: "last_modified", value: 0 },
             ],
             textContent: "",
             children: null,
-        }
+        };
         return new Bookmark(zero, true);
     }
 
@@ -117,14 +125,14 @@ export class Bookmark {
         const timeNow = timeNowSeconds();
         const attr = [
             { name: "add_date", value: timeNow },
-            { name: "last_modified", value: timeNow }
+            { name: "last_modified", value: timeNow },
         ];
         const obj = {
             tagName: "H1",
             attributes: attr,
             textContent: "Bookmarks",
-            children: []
-        }
+            children: [],
+        };
         return new Bookmark(obj, false);
     }
 
@@ -143,7 +151,9 @@ export class Bookmark {
     }
 
     getLastModifiedLocalString() {
-        return timestampToLocalDate(this.attributes.last_modified).toDateString();
+        return timestampToLocalDate(
+            this.attributes.last_modified,
+        ).toDateString();
     }
 
     getAddDateLocalString() {
@@ -151,12 +161,16 @@ export class Bookmark {
     }
 
     getLastModifiedLocalISOString() {
-        const str = timestampToLocalDate(this.attributes.last_modified).toISOString();
+        const str = timestampToLocalDate(
+            this.attributes.last_modified,
+        ).toISOString();
         return str.slice(0, DATE_ISO_STR_LIMIT);
     }
 
     getAddDateLocalISOString() {
-        const str = timestampToLocalDate(this.attributes.add_date).toISOString();
+        const str = timestampToLocalDate(
+            this.attributes.add_date,
+        ).toISOString();
         return str.slice(0, DATE_ISO_STR_LIMIT);
     }
 
@@ -194,14 +208,14 @@ export class Bookmark {
             tag: this.tag,
             attributes: this.attributes,
             text: this.text,
-            children: this.children 
-        }   
+            children: this.children,
+        };
     }
 
     toSearchString(filterSet) {
         let str = "";
-        if (filterSet.has(NAME_ID)) { 
-            str += this.text.toLowerCase() + " "; 
+        if (filterSet.has(NAME_ID)) {
+            str += this.text.toLowerCase() + " ";
         }
         if (filterSet.has(URL_ID) && !this.isFolder()) {
             str += this.attributes.href.toLowerCase() + " ";
@@ -218,7 +232,7 @@ export class Bookmark {
     // Visit every node once - DFS
     *walk() {
         const stack = [this];
-        while(stack.length > 0) {
+        while (stack.length > 0) {
             const node = stack.pop();
             yield node;
             if (node.children) {

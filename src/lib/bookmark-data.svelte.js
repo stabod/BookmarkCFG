@@ -1,8 +1,14 @@
-import { parseHTML, HTMLToObject, HTML_HEADER, ELEMENT_TAG, OPEN_CONTAINER_TAG, CLOSE_CONTAINER_TAG  } from "$lib/html-utils.js"
+import {
+    parseHTML,
+    HTMLToObject,
+    HTML_HEADER,
+    ELEMENT_TAG,
+    OPEN_CONTAINER_TAG,
+    CLOSE_CONTAINER_TAG,
+} from "$lib/html-utils.js";
 import { Bookmark } from "./bookmark.svelte";
 
 export class BookmarkData {
-
     bookmarkTree = $state(null);
     bookmarkArray = $state([]);
     parentMap = new Map();
@@ -35,13 +41,21 @@ export class BookmarkData {
     loadHTML(text) {
         const tree = BookmarkData.HTMLToTree(text);
         this.bookmarkTree = tree;
-        BookmarkData.deriveFromTree(this.bookmarkTree, this.bookmarkArray, this.parentMap);
+        BookmarkData.deriveFromTree(
+            this.bookmarkTree,
+            this.bookmarkArray,
+            this.parentMap,
+        );
     }
 
     newTree() {
         const tree = Bookmark.newRoot();
         this.bookmarkTree = tree;
-        BookmarkData.deriveFromTree(this.bookmarkTree, this.bookmarkArray, this.parentMap);
+        BookmarkData.deriveFromTree(
+            this.bookmarkTree,
+            this.bookmarkArray,
+            this.parentMap,
+        );
     }
 
     clear() {
@@ -55,7 +69,7 @@ export class BookmarkData {
     }
 
     getBookmarks() {
-        if (!this.bookmarkTree) return null; 
+        if (!this.bookmarkTree) return null;
         return this.bookmarkTree;
     }
 
@@ -106,10 +120,12 @@ export class BookmarkData {
         array1[index1] = array2[index2];
         array2[index2] = tmp;
     }
-    
+
     addNode(parent, toBeFolder) {
         const array = parent.children;
-        const newNode = toBeFolder ? Bookmark.newFolder() : Bookmark.newBookmark();
+        const newNode = toBeFolder
+            ? Bookmark.newFolder()
+            : Bookmark.newBookmark();
         array.push(newNode);
         this.bookmarkArray.push(newNode);
         this.parentMap.set(newNode.id, array);
@@ -135,9 +151,13 @@ export class BookmarkData {
             let string = "" + indent;
 
             if (el.visited != true) {
-                if (el.depth > 0) { string += ELEMENT_TAG; }
-                string += el.node.toHTML() + '\n';
-                if (el.visited == false) { string += indent + OPEN_CONTAINER_TAG; }
+                if (el.depth > 0) {
+                    string += ELEMENT_TAG;
+                }
+                string += el.node.toHTML() + "\n";
+                if (el.visited == false) {
+                    string += indent + OPEN_CONTAINER_TAG;
+                }
             } else {
                 string += indent + CLOSE_CONTAINER_TAG;
             }

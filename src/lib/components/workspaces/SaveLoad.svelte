@@ -7,10 +7,14 @@
 </script>
 
 <div class="save-load-holder">
-    <button onclick={() => exportHTML(data.toHTML())}>{locale.ui?.save_load.export_html_button}</button>
+    <button onclick={() => exportHTML(data.toHTML())}
+        >{locale.ui?.save_load.export_html_button}</button
+    >
     <button>{locale.ui?.save_load.export_json_button} TODO</button>
     <button>{locale.ui?.save_load.export_txt_button} TODO</button>
-    <button onclick={() => data.clear()} class="warning">{locale.ui?.save_load.unload_button}</button>
+    <button onclick={() => data.clear()} class="warning"
+        >{locale.ui?.save_load.unload_button}</button
+    >
 </div>
 
 <style>
