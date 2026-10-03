@@ -2,7 +2,7 @@ export const DATE_ISO_STR_LIMIT = 19; // Used to trim out milliseconds and 'Z' i
 export const MILLISECONDS_IN_SECOND = 1000;
 export const MINUTES_IN_MILLISECONDS = 60 * MILLISECONDS_IN_SECOND;
 
-function timestampToDate(timestamp) {
+export function timestampToDate(timestamp) {
     if (!timestamp) {
         timestamp = "0";
     }

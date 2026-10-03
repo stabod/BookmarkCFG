@@ -20,8 +20,12 @@ export function exportHTML(text) {
     exportData(text, "text/html", fileName);
 }
 
-export function exportJSON(obj) {
-    const text = JSON.stringify(obj);
+export function exportJSON(text) {
     const fileName = DEFAULT_FILENAME + "-" + ISONow() + ".json";
     exportData(text, "application/json", fileName);
+}
+
+export function exportText(text) {
+    const filename = DEFAULT_FILENAME + "-" + ISONow() + ".txt";
+    exportData(text, "text/plain", filename);
 }

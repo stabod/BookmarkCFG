@@ -2,6 +2,7 @@ import {
     DATE_ISO_STR_LIMIT,
     dateToSecTimestamp,
     timeNowSeconds,
+    timestampToDate,
     timestampToLocalDate,
 } from "./datetime-utils";
 import {
@@ -210,6 +211,16 @@ export class Bookmark {
             text: this.text,
             children: this.children,
         };
+    }
+
+    toText() {
+        let str = `${this.text}`;
+        if (!this.isFolder()) {
+            str += ` || ${this.attributes.href}`;
+        }
+        str += ` || ${timestampToDate(this.attributes.last_modified).toLocaleString()}`;
+        str += ` || ${timestampToDate(this.attributes.add_date).toLocaleString()}`;
+        return str;
     }
 
     toSearchString(filterSet) {

@@ -165,4 +165,29 @@ export class BookmarkData {
         }
         return text;
     }
+
+    toJSON() {
+        return JSON.stringify(this.bookmarkTree, null, 2);
+    }
+
+    toText() {
+        let text = "";
+        for (const el of this.bookmarkTree.traverse()) {
+            const elText = el.node.toText();
+            const indent = "| ".repeat(el.depth);
+            const divider = "-".repeat(elText.length);
+            if (el.visited != true) {
+                text += indent;
+                text += elText;
+                if (el.node.isFolder()) {
+                    text += "\n" + indent + divider;
+                }
+                text += "\n";
+            }
+            if (el.visited == true) {
+                text += indent + divider + "\n";
+            }
+        }
+        return text;
+    }
 }
