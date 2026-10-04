@@ -1,10 +1,10 @@
 <script>
     import { getContext } from "svelte";
-    import BookmarkNode from "$lib/components/BookmarkNode.svelte";
-    import Editor from "$lib/components/workspaces/Editor.svelte";
-    import Search from "$lib/components/workspaces/Search.svelte";
-    import Stats from "$lib/components/workspaces/Stats.svelte";
-    import SaveLoad from "$lib/components/workspaces/SaveLoad.svelte";
+    import BookmarkNode from "#lib/components/BookmarkNode.svelte";
+    import Editor from "#lib/components/workspaces/Editor.svelte";
+    import Search from "#lib/components/workspaces/Search.svelte";
+    import Stats from "#lib/components/workspaces/Stats.svelte";
+    import SaveLoad from "#lib/components/workspaces/SaveLoad.svelte";
 
     const EDITOR_TAB_ID = 0;
     const SEARCH_TAB_ID = 1;

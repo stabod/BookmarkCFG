@@ -1,13 +1,13 @@
 <script>
     import { getContext } from "svelte";
-    import { BookmarkSearch } from "$lib/bookmark-search.svelte";
+    import { BookmarkSearch } from "#lib/bookmark-search.svelte";
     import {
         NAME_ID,
         URL_ID,
         ADD_DATE_ID,
         LAST_MODIFIED_ID,
-    } from "$lib/bookmark.svelte";
-    import BookmarkList from "$lib/components/BookmarkList.svelte";
+    } from "#lib/bookmark.svelte";
+    import BookmarkList from "#lib/components/BookmarkList.svelte";
 
     const data = getContext("bookmarkData");
     const locale = getContext("locale");

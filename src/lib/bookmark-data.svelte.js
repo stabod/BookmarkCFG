@@ -5,7 +5,7 @@ import {
     ELEMENT_TAG,
     OPEN_CONTAINER_TAG,
     CLOSE_CONTAINER_TAG,
-} from "$lib/html-utils.js";
+} from "#lib/html-utils.js";
 import { Bookmark } from "./bookmark.svelte";
 
 export class BookmarkData {

@@ -1,12 +1,12 @@
 import { beforeAll, describe, expect, test } from "vitest";
-import { HTMLToObject, parseHTML } from "$lib/html-utils";
+import { HTMLToObject, parseHTML } from "#lib/html-utils";
 import {
     correctlyParsedAttributes,
     exampleCorrectObject,
     exampleHTML,
     exampleInvalidHTML,
 } from "./test-constants";
-import { Bookmark } from "$lib/bookmark.svelte";
+import { Bookmark } from "#lib/bookmark.svelte";
 
 let parseObj;
 let bookmarkObj;

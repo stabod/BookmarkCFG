@@ -12,7 +12,7 @@
         "change_theme_button": "Change Theme",
         "language_button": "Language",
         "language_change_title": "Choose Language:",
-        "welcome_text": "BookmarkCGG allows you to edit your bookmarks file. Web Browsers usually export bookmarks to a HTML file. Read more in the help section of the application. To begin, press one of the buttons below:",
+        "welcome_text": "BookmarkCGG allows you to edit your bookmarks file. Web Browsers usually export bookmarks to a HTML file. To begin, press one of the buttons below:",
         "import_html_button": "Import HTML file",
         "create_new_file_button": "Create new empty file",
         "editor_tab_button": "Editor",

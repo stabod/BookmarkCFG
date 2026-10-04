@@ -1,9 +1,9 @@
 import { beforeAll, describe, expect, test } from "vitest";
-import { Bookmark } from "$lib/bookmark.svelte.js";
+import { Bookmark } from "#lib/bookmark.svelte.js";
 import {
     exampleInputAttributes,
     correctlyParsedAttributes,
-} from "$lib/tests/test-constants.js";
+} from "#lib/tests/test-constants.js";
 
 let parsedAttributes;
 let newBookmark;

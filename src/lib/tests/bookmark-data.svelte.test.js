@@ -1,5 +1,5 @@
 import { beforeAll, describe, test, expect } from "vitest";
-import { BookmarkData } from "$lib/bookmark-data.svelte.js";
+import { BookmarkData } from "#lib/bookmark-data.svelte.js";
 import {
     exampleCorrectObject,
     exampleCorrectArray,

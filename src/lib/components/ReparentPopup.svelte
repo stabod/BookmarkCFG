@@ -1,7 +1,7 @@
 <script>
     import { getContext, setContext } from "svelte";
     import BookmarkNode from "./BookmarkNode.svelte";
-    import { Selection } from "$lib/selection.svelte";
+    import { Selection } from "#lib/selection.svelte";
 
     const data = getContext("bookmarkData");
     const selection = getContext("selection");

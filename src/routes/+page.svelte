@@ -1,13 +1,13 @@
 <script>
     import { setContext } from "svelte";
     import { SvelteSet } from "svelte/reactivity";
-    import { browser } from "$app/environment";
-    import Workspace from "$lib/components/Workspace.svelte";
-    import HelpPopup from "$lib/components/HelpPopup.svelte";
-    import LanguageChange from "$lib/components/LanguageChange.svelte";
-    import { BookmarkData } from "$lib/bookmark-data.svelte.js";
-    import { Selection } from "$lib/selection.svelte.js";
-    import { Locale } from "$lib/locale.svelte";
+    import { browser } from "$app/env";
+    import Workspace from "#lib/components/Workspace.svelte";
+    import HelpPopup from "#lib/components/HelpPopup.svelte";
+    import LanguageChange from "#lib/components/LanguageChange.svelte";
+    import { BookmarkData } from "#lib/bookmark-data.svelte.js";
+    import { Selection } from "#lib/selection.svelte.js";
+    import { Locale } from "#lib/locale.svelte";
 
     const bookmarkData = new BookmarkData();
     const selection = new Selection(bookmarkData);
@@ -52,7 +52,6 @@
         <h1 class="title">BookmarkCFG</h1>
         <div>
             <LanguageChange />
-            <HelpPopup />
             <button class="hidden-button" onclick={changeTheme}
                 >{locale.ui?.top.change_theme_button}</button
             >

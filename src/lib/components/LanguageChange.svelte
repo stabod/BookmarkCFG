@@ -1,6 +1,6 @@
 <script>
     import { getContext } from "svelte";
-    import i18nMapping from "$lib/i18n/lang-map.json";
+    import i18nMapping from "#lib/i18n/lang-map.json";
 
     const locale = getContext("locale");
 

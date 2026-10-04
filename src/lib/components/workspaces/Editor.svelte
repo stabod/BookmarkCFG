@@ -3,9 +3,9 @@
     import {
         timestampToLocalDate,
         dateToSecTimestamp,
-    } from "$lib/datetime-utils.js";
-    import BookmarkNode from "$lib/components/BookmarkNode.svelte";
-    import ReparentPopup from "$lib/components/ReparentPopup.svelte";
+    } from "#lib/datetime-utils.js";
+    import BookmarkNode from "#lib/components/BookmarkNode.svelte";
+    import ReparentPopup from "#lib/components/ReparentPopup.svelte";
 
     const data = getContext("bookmarkData");
     const selection = getContext("selection");

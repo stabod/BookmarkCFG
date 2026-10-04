@@ -1,5 +1,5 @@
 <script>
-    import { exportHTML, exportJSON, exportText } from "$lib/export-utils.js";
+    import { exportHTML, exportJSON, exportText } from "#lib/export-utils.js";
     import { getContext } from "svelte";
 
     const data = getContext("bookmarkData");

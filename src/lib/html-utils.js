@@ -1,4 +1,4 @@
-import { Bookmark } from "$lib/bookmark.svelte.js";
+import { Bookmark } from "#lib/bookmark.svelte.js";
 
 export const HTML_HEADER =
     '<!DOCTYPE NETSCAPE-Bookmark-file-1>\n<\

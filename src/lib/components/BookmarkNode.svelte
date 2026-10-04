@@ -1,8 +1,8 @@
 <script>
     import { getContext } from "svelte";
     import BookmarkNode from "./BookmarkNode.svelte";
-    import bookmarkIcon from "$lib/assets/star.png";
-    import folderIcon from "$lib/assets/folder.png";
+    import bookmarkIcon from "#lib/assets/star.png";
+    import folderIcon from "#lib/assets/folder.png";
     let { node } = $props();
 
     const selection = getContext("selection");

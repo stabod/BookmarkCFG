@@ -1,14 +1,14 @@
 <script>
     import { getContext } from "svelte";
     import { SvelteSet } from "svelte/reactivity";
-    import bookmarkIcon from "$lib/assets/star.png";
-    import folderIcon from "$lib/assets/folder.png";
+    import bookmarkIcon from "#lib/assets/star.png";
+    import folderIcon from "#lib/assets/folder.png";
     import {
         NAME_ID,
         URL_ID,
         ADD_DATE_ID,
         LAST_MODIFIED_ID,
-    } from "$lib/bookmark.svelte";
+    } from "#lib/bookmark.svelte";
     let { nodes } = $props();
 
     const showRows = new SvelteSet([
