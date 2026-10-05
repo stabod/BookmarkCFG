@@ -7,6 +7,11 @@
         "confirm": "",
         "close": ""
     },
+    "about": {
+        "about_button": "",
+        "about_text": "",
+        "gnu_href_text": ""
+    },
     "top": {
         "help_button": "",
         "change_theme_button": "",

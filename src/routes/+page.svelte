@@ -5,6 +5,7 @@
     import Workspace from "#lib/components/Workspace.svelte";
     import HelpPopup from "#lib/components/HelpPopup.svelte";
     import LanguageChange from "#lib/components/LanguageChange.svelte";
+    import AboutPopup from "#lib/components/AboutPopup.svelte";
     import { BookmarkData } from "#lib/bookmark-data.svelte.js";
     import { Selection } from "#lib/selection.svelte.js";
     import { Locale } from "#lib/locale.svelte";
@@ -55,6 +56,7 @@
             <button class="hidden-button" onclick={changeTheme}
                 >{locale.ui?.top.change_theme_button}</button
             >
+            <AboutPopup />
         </div>
     </div>
     {#if errorMsg}
@@ -63,20 +65,24 @@
 
     {#if !bookmarkData.isLoaded()}
         <div class="upload-holder">
-            <p>{locale.ui?.top.welcome_text}</p>
-            <label class="upload-label" for="HTML-file-upload-input">
-                <span>{locale.ui?.top.import_html_button}</span>
-                <input
-                    class="visually-hidden"
-                    id="HTML-file-upload-input"
-                    type="file"
-                    accept=".html"
-                    onchange={handleUpload}
-                />
-            </label>
-            <button onclick={() => bookmarkData.newTree()}
-                >{locale.ui?.top.create_new_file_button}</button
-            >
+            <p class="welcome-text">{locale.ui?.top.welcome_text}</p>
+            <div class="upload-button-holder">
+                <label class="upload-label" for="HTML-file-upload-input">
+                    <div style="text-align: center;">
+                        {locale.ui?.top.import_html_button}
+                    </div>
+                    <input
+                        class="visually-hidden"
+                        id="HTML-file-upload-input"
+                        type="file"
+                        accept=".html"
+                        onchange={handleUpload}
+                    />
+                </label>
+                <button onclick={() => bookmarkData.newTree()}
+                    >{locale.ui?.top.create_new_file_button}</button
+                >
+            </div>
         </div>
     {:else}
         <Workspace />
@@ -90,17 +96,18 @@
         color: var(--text-color);
         margin: 0;
         padding: 0;
-        width: 100vw;
+        width: 100dvw;
         height: 100dvh;
-        overflow: hidden;
         display: flex;
         justify-content: center;
+        align-items: center;
     }
 
     .main-container {
         display: flex;
         flex-direction: column;
-        height: 97.5%;
+        margin: 16px;
+        height: 95%;
         width: 95%;
     }
 
@@ -117,18 +124,25 @@
     }
 
     .upload-holder {
+        flex: 1;
         background: var(--surface-color);
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        padding: 8px 8px;
         border: 4px outset var(--border-color);
         border-radius: 4px;
-        position: absolute;
-        top: 25%;
-        left: 23.33%;
-        height: 50%;
+    }
+
+    .welcome-text {
+        margin: 4px;
+        font-size: large;
+    }
+
+    .upload-button-holder {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
         width: 50%;
     }
 
@@ -138,11 +152,5 @@
 
     .upload-label:active {
         border-style: inset;
-    }
-
-    @media (max-width: 768px) {
-        .upload-holder {
-            width: 80%;
-        }
     }
 </style>

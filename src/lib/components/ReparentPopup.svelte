@@ -70,22 +70,6 @@
 </dialog>
 
 <style>
-    dialog {
-        background-color: var(--surface-color);
-        border: 4px outset var(--border-color);
-        border-radius: 8px;
-        padding: 1.5rem;
-        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-        margin: auto;
-        max-width: 90vw;
-        max-height: 90vh;
-    }
-
-    dialog::backdrop {
-        background: rgba(0, 0, 0, 0.5);
-        backdrop-filter: blur(2px);
-    }
-
     .dialog-holder {
         display: flex;
         flex-direction: row;

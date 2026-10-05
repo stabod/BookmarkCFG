@@ -7,6 +7,11 @@
         "confirm": "Confirm",
         "close": "Close"
     },
+    "about": {
+        "about_button": "About",
+        "about_text": "BookmarkCFG is a web application made with Svelte 5 and licensed under the AGPLv3. Read more about the license at",
+        "gnu_href_text": "the GNU project's website"
+    },
     "top": {
         "help_button": "Help",
         "change_theme_button": "Change Theme",

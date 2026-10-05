@@ -34,13 +34,13 @@
     <ul class="node-list">
         {#each folderOnly ? parent.children.filter( (x) => x.isFolder(), ) : parent.children as child}
             <li class="node-item">
-                <BookmarkNode node={child} {folderOnly} />
+                <BookmarkNode node={child} />
             </li>
         {/each}
     </ul>
 {/snippet}
 
-<div draggable="true">
+<div>
     <button
         class={selection.isSelected(node)
             ? "bookmark-btn selected"

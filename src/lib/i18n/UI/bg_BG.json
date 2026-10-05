@@ -7,6 +7,11 @@
         "confirm": "Потвърждаване",
         "close": "Затвори"
     },
+    "about": {
+        "about_button": "Информация",
+        "about_text": "BookmarkCGG е уеб приложение създадено със Svelte 5 и разпространенто под AGPLv3 лиценза. Повече за лиценза може да се прочене на ",
+        "gnu_href_text": "уеб сайта на GNU проекта"
+    },
     "top": {
         "help_button": "Помощ",
         "change_theme_button": "Промяна на цветовата гама",
